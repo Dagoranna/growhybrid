@@ -1,26 +1,134 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --main-color-light: #ffcc00;
+  --main-color: #b13bff;
+  --main-color-dark: #471396;
+  --main-shadow: #090040;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+ul {
+  list-style-type: none;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--main-color-dark);
+  height: auto;
+  min-height: 100svh;
+  border: 5px ridge var(--main-color);
 }
+
+.mainButton {
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px var(--main-shadow);
+  user-select: none;
+  cursor: pointer;
+
+  outline: none;
+  padding: 0.4em;
+  border-radius: 0.2em;
+  margin: 0.2em;
+  min-width: 5rem;
+
+  background: linear-gradient(
+    var(--main-color),
+    var(--main-color-dark) 50%,
+    var(--main-color)
+  );
+  border: 0.1em solid var(--main-color-dark);
+  box-shadow: 0.1em 0.1em 0.2em var(--main-color-dark);
+}
+
+.mainButton:hover {
+  background:
+    linear-gradient(
+      -60deg,
+      transparent 0%,
+      transparent 45%,
+      var(--main-color-light) 50%,
+      transparent 55%
+    ),
+    linear-gradient(
+      var(--main-color),
+      var(--main-color-dark) 50%,
+      var(--main-color)
+    );
+  background-size:
+    300% 100%,
+    100% 100%;
+  background-position:
+    100% 0%,
+    0 0;
+  animation: glint 0.5s linear forwards;
+  box-shadow:
+    0.1em 0.1em 0.2em var(--main-color-dark),
+    0 0.1em 0.1em var(--main-color) inset;
+}
+
+@keyframes glint {
+  from {
+    background-position-x: +100%;
+  }
+  to {
+    background-position-x: -50%;
+  }
+}
+
+.mainButton:active {
+  box-shadow: none;
+}
+
+.mainInput {
+  border-color: silver;
+  margin: 0.1em;
+}
+
+#authInputFields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#authSwitchers {
+  display: flex;
+  flex-direction: column;
+}
+
+#LoginButton {
+  position: absolute;
+  z-index: 1001;
+}
+
+#logoutButton {
+  position: absolute;
+}
+
+.switcher {
+  margin: 0.1em;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tableTitle {
+  font-size: 1.5rem;
+}
+
+.verticalForm {
+  display: flex;
+  flex-direction: column;
+}
+/*
+@media only screen and (max-width: 414px) {
+  .react-resizable-handle {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
+*/

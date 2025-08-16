@@ -1,0 +1,69 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import TopPanel from "./TopPanel";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../app/store/slices/mainSlice";
+import type { RootState } from "../app/store/store";
+
+type MyProps = {
+  children: React.ReactNode;
+};
+
+export default function MainAppWrapper({ children }: MyProps) {
+  const dispatch = useDispatch();
+  const userEmail = useSelector((state: RootState) => state.main.userEmail);
+  const userName = useSelector((state: RootState) => state.main.userName);
+  const loginState = useSelector((state: RootState) => state.main.loginState);
+
+  useEffect(() => {
+    async function checkAuthToken() {
+      let response = await fetch("/api/auth/checkauthtoken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      let baseResponse = await response.json();
+
+      if (response.ok) {
+        if (baseResponse.tokenState === 1) {
+          dispatch(actions.setLoginState(true));
+          dispatch(actions.setUserEmail(baseResponse.email));
+          dispatch(actions.setUserName(baseResponse.name));
+        } else {
+          console.log("error!");
+          console.log(baseResponse.message);
+        }
+      } else {
+        console.log("error!");
+        console.log(baseResponse);
+      }
+    }
+
+    checkAuthToken();
+  }, []);
+
+  return (
+    <>
+      <TopPanel />
+      <div>{children}</div>
+    </>
+  );
+
+  /*  return (
+    <>
+      {!loginState && (
+        <div style={{ display: "flex" }}>
+          <FormWrapper formName="Login/Register">
+            <AuthForm />
+          </FormWrapper>
+          <TopPanel />
+        </div>
+      )}
+      {loginState && <TopPanel />}
+      <div>{children}</div>
+    </>
+  );*/
+}
