@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../../app/store/store";
 import * as actions from "../../../app/store/slices/mainSlice";
 import FormErrors from "../FormErrors";
-import stylesFormWrapper from "../FormWrapper.module.css";
+import stylesFormWrapper from "../forms.module.css";
 
 export default function AuthForm() {
   const dispatch: AppDispatch = useDispatch();

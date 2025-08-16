@@ -1,6 +1,5 @@
 "use client";
-
-import styles from "./FormErrors.module.css";
+import styles from "./forms.module.css";
 
 type FormErrorsProps = {
   formErrors: Set<string>;

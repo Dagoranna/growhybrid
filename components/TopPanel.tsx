@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import styles from "./TopPanel.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import FormWrapper from "./forms/FormWrapper";
@@ -43,11 +42,18 @@ export default function TopPanel() {
   }
 
   return (
-    <div className={styles.topPanel}>
+    <div className="topPanel">
       {!loginState && (
         <FormWrapper formName="Login/Register">
           <AuthForm />
         </FormWrapper>
+      )}
+
+      {loginState && (
+        <div>
+          Hello,{" "}
+          <span style={{ fontWeight: "bold", color: "gold" }}>{userName}</span>!
+        </div>
       )}
 
       {loginState && (
@@ -57,13 +63,6 @@ export default function TopPanel() {
         >
           Logout
         </button>
-      )}
-
-      {loginState && (
-        <div>
-          Hello,{" "}
-          <span style={{ fontWeight: "bold", color: "gold" }}>{userName}</span>!
-        </div>
       )}
     </div>
   );

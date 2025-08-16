@@ -1,0 +1,51 @@
+.baseTable {
+  position: absolute;
+
+  padding: 0.5em;
+  border-radius: 0.1em;
+
+  width: fit-content;
+  margin-left: 0.2em;
+  margin-top: 0.2em;
+  padding-top: 1.4rem;
+  margin-right: auto;
+  margin-left: auto;
+  z-index: 10000;
+}
+
+.closeButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1.3rem;
+  height: 1.3rem;
+  color: black;
+  background-color: transparent;
+  text-shadow: 2px 2px 2px white;
+  border-radius: 0.3em;
+  border: 1px solid white;
+  line-height: 0.5em;
+  cursor: pointer;
+}
+
+.actionFail {
+  color: #f44336;
+  font-style: normal;
+  font-size: 0.8rem;
+  font-family: arial;
+}
+
+.actionSuccess {
+  color: #4caf50;
+  font-style: normal;
+  font-size: 0.8rem;
+  font-family: arial;
+}
+
+.errorList {
+  color: #f44336;
+  font-style: normal;
+  font-size: 0.8rem;
+  list-style-type: "*";
+  font-family: arial;
+}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState } from "react";
-import styles from "./FormWrapper.module.css";
+import styles from "./forms.module.css";
 
 type MyProps = {
   formName: string;
@@ -51,7 +51,10 @@ export default function FormWrapper({
         </button>
       )}
       {isOpen && (
-        <div className={styles.baseTable} style={{ ...addFormStyle }}>
+        <div
+          className={`${styles.baseTable} glass`}
+          style={{ ...addFormStyle }}
+        >
           <button
             id={closeId}
             className={styles.closeButton}

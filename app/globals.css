@@ -17,9 +17,24 @@ ul {
 
 body {
   color: var(--main-color-dark);
+  background:
+    url("/images/flower2.webp"),
+    color-mix(in srgb, var(--main-color) 10%, transparent);
+  background-repeat: no-repeat;
+  background-position-x: right;
+
   height: auto;
   min-height: 100svh;
-  border: 5px ridge var(--main-color);
+}
+
+.topPanel {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+
+  min-height: 2.8rem;
+  padding: 0.2rem;
 }
 
 .mainButton {
@@ -32,17 +47,18 @@ body {
   cursor: pointer;
 
   outline: none;
-  padding: 0.4em;
-  border-radius: 0.2em;
-  margin: 0.2em;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  margin: 0.2rem;
   min-width: 5rem;
+  min-height: 2rem;
 
   background: linear-gradient(
     var(--main-color),
     var(--main-color-dark) 50%,
     var(--main-color)
   );
-  border: 0.1em solid var(--main-color-dark);
+  border: 0.1rem solid var(--main-color-dark);
   box-shadow: 0.1em 0.1em 0.2em var(--main-color-dark);
 }
 
@@ -85,9 +101,18 @@ body {
   box-shadow: none;
 }
 
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
 .mainInput {
   border-color: silver;
-  margin: 0.1em;
+  margin: 0.1rem;
 }
 
 #authInputFields {
@@ -111,7 +136,7 @@ body {
 }
 
 .switcher {
-  margin: 0.1em;
+  margin: 0.1rem;
   text-decoration: underline;
   cursor: pointer;
 }
