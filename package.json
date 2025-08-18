@@ -1,5 +1,5 @@
 {
-  "name": "growahybrid",
+  "name": "growhybrid",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -24,9 +24,11 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint-config-prettier": "^10.1.8",
+    "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.12",
     "typescript": "^5"
   }
 }

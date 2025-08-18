@@ -153,12 +153,8 @@ export default function AuthForm() {
   }
 
   return (
-    <form
-      id="authForm"
-      style={{ position: "relative", zIndex: 10002 }}
-      onSubmit={handleSubmit}
-    >
-      <div id="authInputFields">
+    <form onSubmit={handleSubmit}>
+      <div className="authInputFields">
         <div className="tableTitle">{formMode}</div>
         <div
           className={
@@ -175,7 +171,6 @@ export default function AuthForm() {
             placeholder="nickname"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-            className="mainInput"
           />
         )}
         <input
@@ -183,7 +178,6 @@ export default function AuthForm() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mainInput"
         />
 
         {formMode !== "Reset password" && (
@@ -192,7 +186,6 @@ export default function AuthForm() {
             placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mainInput"
           />
         )}
 
@@ -202,7 +195,6 @@ export default function AuthForm() {
             placeholder="confirm password"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
-            className="mainInput"
           />
         )}
         {formMode === "Login" && (
@@ -224,7 +216,7 @@ export default function AuthForm() {
           {formMode}
         </button>
       </div>
-      <div id="authSwitchers">
+      <div className="verticalForm">
         {formMode !== "Login" && (
           <div
             id="goToLogin"

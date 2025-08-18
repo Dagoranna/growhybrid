@@ -3,6 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import styles from "./forms.module.css";
+import Paw from "../designelems/Paw";
 
 type MyProps = {
   formName: string;
@@ -63,6 +64,7 @@ export default function FormWrapper({
             &#x2716;
           </button>
           {children}
+          <Paw width={60} />
         </div>
       )}
     </>

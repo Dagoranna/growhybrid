@@ -51,19 +51,4 @@ export default function MainAppWrapper({ children }: MyProps) {
       <div>{children}</div>
     </>
   );
-
-  /*  return (
-    <>
-      {!loginState && (
-        <div style={{ display: "flex" }}>
-          <FormWrapper formName="Login/Register">
-            <AuthForm />
-          </FormWrapper>
-          <TopPanel />
-        </div>
-      )}
-      {loginState && <TopPanel />}
-      <div>{children}</div>
-    </>
-  );*/
 }

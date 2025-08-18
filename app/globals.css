@@ -1,14 +1,26 @@
+@import "tailwindcss";
+
 :root {
-  --main-color-light: #ffcc00;
-  --main-color: #b13bff;
-  --main-color-dark: #471396;
-  --main-shadow: #090040;
+  --main-color-light: #00CAFF;
+  --main-color: #2c96fa;
+  --main-color-transp: color-mix(in srgb, var(--main-color) 20%, transparent);
+  --main-color-dark: #22007e;
+  --main-shadow: #c5f6ff;
+
+  font-family: 'Times New Roman', Times, serif;
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
+}
+
+input {
+  background: rgba(255, 255, 255, 0.5);
+  color: #000;
+  border: 1px solid color-mix(in srgb, var(--main-color) 30%, transparent);
+  border-radius: .1em;
+  padding: 0.2em 0.5em;
+  margin: 0.1rem;
 }
 
 ul {
@@ -18,11 +30,11 @@ ul {
 body {
   color: var(--main-color-dark);
   background:
-    url("/images/flower2.webp"),
+    url("/images/shaan_sm.jpg"),
     color-mix(in srgb, var(--main-color) 10%, transparent);
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
-  background-position-x: right;
-
   height: auto;
   min-height: 100svh;
 }
@@ -33,7 +45,7 @@ body {
   justify-content: flex-end;
   flex-wrap: nowrap;
 
-  min-height: 2.8rem;
+  min-height: 3.5rem;
   padding: 0.2rem;
 }
 
@@ -52,6 +64,7 @@ body {
   margin: 0.2rem;
   min-width: 5rem;
   min-height: 2rem;
+  align-self: center;
 
   background: linear-gradient(
     var(--main-color),
@@ -102,37 +115,20 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 5px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: color-mix(in srgb, var(--main-color-light) 15%, transparent);
+  box-shadow: 0 0 4px var(--main-shadow),
+  0 0 8px var(--main-shadow),
+  0 0 12px white,
+  0 0 16px white,
+  -0.2em -0.2em 1em var(--main-color-light) inset;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid color-mix(in srgb, var(--main-color) 25%, transparent);
 }
 
-.mainInput {
-  border-color: silver;
-  margin: 0.1rem;
-}
-
-#authInputFields {
-  display: flex;
-  flex-direction: column;
+.authInputFields {
+  @apply flex flex-col;
   align-items: center;
-}
-
-#authSwitchers {
-  display: flex;
-  flex-direction: column;
-}
-
-#LoginButton {
-  position: absolute;
-  z-index: 1001;
-}
-
-#logoutButton {
-  position: absolute;
 }
 
 .switcher {
@@ -146,14 +142,9 @@ body {
 }
 
 .verticalForm {
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col;
 }
-/*
-@media only screen and (max-width: 414px) {
-  .react-resizable-handle {
-    width: 60px !important;
-    height: 60px !important;
-  }
+
+.resetPassForm{
+  @apply flex flex-row justify-center;
 }
-*/

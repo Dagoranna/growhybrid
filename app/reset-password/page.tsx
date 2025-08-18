@@ -1,10 +1,10 @@
 "use client";
-import { Suspense, FormEvent } from "react";
+import { Suspense, FormEvent, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+
 import FormWrapper from "../../components/forms/FormWrapper";
-import { useState, useEffect } from "react";
 import FormErrors from "../../components/forms/FormErrors";
-import stylesFormWrapper from "../../components/forms/FormWrapper.module.css";
+import stylesFormWrapper from "../../components/forms/forms.module.css";
 
 function ResetPasswordPage() {
   const token = useSearchParams().get("token");
@@ -59,7 +59,7 @@ function ResetPasswordPage() {
     if (actionResult) {
       const timer = setTimeout(() => {
         window.location.replace("/");
-      }, 5000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [actionResult]);
@@ -110,20 +110,12 @@ function ResetPasswordPage() {
   }
 
   return (
-    <main>
+    <div className="resetPassForm">
       {isTokenValid === 0 && (
-        <FormWrapper formName="Checking resetting link..." isFormOpen={true}>
-          <form id="resetForm" className="verticalForm">
-            <div className="tableTitle">Checking reset link...</div>
-          </form>
-        </FormWrapper>
+        <div className="tableTitle">Checking reset link...</div>
       )}
       {isTokenValid === -1 && (
-        <FormWrapper formName="Password Reset Link Expired" isFormOpen={true}>
-          <form id="resetForm" className="verticalForm">
-            <div className="tableTitle">Password reset link is invalid</div>
-          </form>
-        </FormWrapper>
+        <div className="tableTitle">Password reset link is invalid</div>
       )}
       {isTokenValid === 1 && (
         <FormWrapper formName="Enter new password" isFormOpen={true}>
@@ -160,7 +152,7 @@ function ResetPasswordPage() {
           </form>
         </FormWrapper>
       )}
-    </main>
+    </div>
   );
 }
 
