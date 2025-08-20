@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TopPanel from "./TopPanel";
+import MainBlock from "./MainBlock";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import type { RootState } from "../app/store/store";
@@ -48,7 +49,7 @@ export default function MainAppWrapper({ children }: MyProps) {
   return (
     <>
       <TopPanel />
-      <div>{children}</div>
+      <MainBlock />
     </>
   );
 }

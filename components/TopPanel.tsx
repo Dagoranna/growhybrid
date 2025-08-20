@@ -14,8 +14,10 @@ export default function TopPanel() {
   const loginState = useSelector((state: RootState) => state.main.loginState);
   const userEmail = useSelector((state: RootState) => state.main.userEmail);
   const userName = useSelector((state: RootState) => state.main.userName);
+  const screen = useSelector((state: RootState) => state.main.screen);
 
   async function handleLogout() {
+    dispatch(actions.setScreen("home"));
     let response = await fetch("/api/auth/deleteauthtoken", {
       method: "POST",
       headers: {
@@ -44,21 +46,64 @@ export default function TopPanel() {
   return (
     <div className="topPanel">
       {!loginState && (
-        <FormWrapper formName="Login/Register">
+        <FormWrapper
+          formName="Login/Register"
+          addButtonStyle={{ order: "1", marginLeft: "auto" }}
+          addFormStyle={{ order: "1", right: "5px" }}
+        >
           <AuthForm />
         </FormWrapper>
       )}
 
       {loginState && (
-        <div>
+        <div style={{ order: "1", marginLeft: "auto" }}>
           Hello,{" "}
           <span style={{ fontWeight: "bold", color: "gold" }}>{userName}</span>!
         </div>
       )}
 
+      <button
+        className={screen === "home" ? "mainButton activeButton" : `mainButton`}
+        onClick={() => dispatch(actions.setScreen("home"))}
+      >
+        Home
+      </button>
+
+      <button
+        className={
+          screen === "orbit" ? "mainButton activeButton" : `mainButton`
+        }
+        onClick={() => dispatch(actions.setScreen("orbit"))}
+      >
+        Orbit
+      </button>
+
+      {loginState && (
+        <button
+          className={
+            screen === "base" ? "mainButton activeButton" : `mainButton`
+          }
+          onClick={() => dispatch(actions.setScreen("base"))}
+        >
+          Your Base
+        </button>
+      )}
+
+      {loginState && (
+        <button
+          className={
+            screen === "market" ? "mainButton activeButton" : `mainButton`
+          }
+          onClick={() => dispatch(actions.setScreen("market"))}
+        >
+          Market Base
+        </button>
+      )}
+
       {loginState && (
         <button
           className="mainButton"
+          style={{ order: "1", marginLeft: "auto" }}
           onClick={async () => await handleLogout()}
         >
           Logout

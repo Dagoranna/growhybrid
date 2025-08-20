@@ -28,6 +28,8 @@ ul {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   color: var(--main-color-dark);
   background:
     url("/images/shaan_sm.jpg"),
@@ -42,11 +44,17 @@ body {
 .topPanel {
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-wrap: nowrap;
 
   min-height: 3.5rem;
   padding: 0.2rem;
+}
+
+.mainBlock{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .mainButton {
@@ -101,6 +109,19 @@ body {
     0 0.1em 0.1em var(--main-color) inset;
 }
 
+.centerPaper{
+  align-self: flex-end;
+  width: 30%;
+  height: 50svh;
+  margin-top: 10svh;
+  transform-origin: center;
+  animation: slideHorizontal 0.5s linear;
+  margin-right: 2rem;
+  overflow: auto;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
 @keyframes glint {
   from {
     background-position-x: +100%;
@@ -110,9 +131,49 @@ body {
   }
 }
 
+
+@keyframes slideHorizontal {
+  0% {
+    transform: scale(0,1);
+  }
+  100% {
+    transform: scale(1,1);
+  }
+}
+
 .mainButton:active {
   box-shadow: none;
 }
+
+.activeButton{
+  background: linear-gradient( white, var(--main-color) 50%, white );
+  border: 0.1rem solid var(--main-color-light);
+  box-shadow: 0 0 0.5em 0.5em white;
+  color: var(--main-color-dark); 
+}
+
+.activeButton:hover{
+  background: linear-gradient( white, var(--main-color) 50%, white );
+  border: 0.1rem solid var(--main-color-light);
+  box-shadow: 0 0 0.5em 0.5em white;
+  color: var(--main-color-dark);  
+  animation: none;  
+}
+
+.inactiveButton{
+  background: lightgray;
+  box-shadow: 1px 1px 1px gray;
+  border: 2px solid gray;
+}
+
+.inactiveButton:hover{
+  background: lightgray;
+  box-shadow: 1px 1px 1px gray;
+  border: 2px solid gray;
+  animation: none
+}
+
+
 
 .glass {
   background: color-mix(in srgb, var(--main-color-light) 15%, transparent);
