@@ -3,8 +3,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
-
 import type { RootState, AppDispatch } from "../app/store/store";
+
+import Orbit from "./Orbit";
+import Base from "./Base";
 
 export default function MainBlock() {
   const dispatch: AppDispatch = useDispatch();
@@ -17,7 +19,7 @@ export default function MainBlock() {
   return (
     <div className="mainBlock">
       {screen === "home" && (
-        <div className="centerPaper glass">
+        <div className="centerPaper glass self-end">
           "Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
           ab illo inventore veritatis et quasi architecto beatae vitae dicta
@@ -33,6 +35,8 @@ export default function MainBlock() {
           qui dolorem eum fugiat quo voluptas nulla pariatur?"
         </div>
       )}
+      {screen === "orbit" && <Orbit />}
+      {screen === "base" && <Base />}
     </div>
   );
 }
