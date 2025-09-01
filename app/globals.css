@@ -41,6 +41,10 @@ body {
   min-height: 100svh;
 }
 
+.nightSky{
+  background: url("/images/sky.webp") 0% 0% / cover;
+}
+
 .topPanel {
   position: relative;
   display: flex;
@@ -76,11 +80,7 @@ body {
   min-height: 2rem;
   align-self: center;
 
-  background: linear-gradient(
-    var(--main-color),
-    var(--main-color-dark) 50%,
-    var(--main-color)
-  );
+  background: linear-gradient( var(--main-color-dark) 50%, var(--main-color) );
   border: 0.1rem solid var(--main-color-dark);
   box-shadow: 0.1em 0.1em 0.2em var(--main-color-dark);
 }
@@ -95,7 +95,7 @@ body {
       transparent 55%
     ),
     linear-gradient(
-      var(--main-color),
+
       var(--main-color-dark) 50%,
       var(--main-color)
     );
