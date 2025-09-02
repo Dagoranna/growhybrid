@@ -7,6 +7,7 @@ import type { RootState, AppDispatch } from "../app/store/store";
 
 import Orbit from "./Orbit";
 import Base from "./Base";
+import BottomPanel from "./BottomPanel";
 
 export default function MainBlock() {
   const dispatch: AppDispatch = useDispatch();
@@ -36,7 +37,12 @@ export default function MainBlock() {
         </div>
       )}
       {screen === "orbit" && <Orbit />}
-      {screen === "base" && <Base />}
+      {screen === "base" && (
+        <>
+          <Base />
+          <BottomPanel />
+        </>
+      )}
     </div>
   );
 }

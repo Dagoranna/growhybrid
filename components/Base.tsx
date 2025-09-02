@@ -3,11 +3,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
+import * as baseActions from "../app/store/slices/baseSlice";
 import { FC, ReactNode } from "react";
 import { Object3D, Group } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Edges } from "@react-three/drei";
-
+import type { SectionNumbers } from "../app/store/slices/baseSlice";
 import type { RootState, AppDispatch } from "../app/store/store";
 
 type Size = number[] & { length: 3 | 4 };
@@ -19,6 +20,7 @@ type GeometryParams = {
 
   color?: string;
   children?: ReactNode;
+  sectionNumber?: SectionNumbers | null;
 };
 
 type TunnelProps = {
@@ -26,19 +28,39 @@ type TunnelProps = {
   angle: number;
 };
 
-function Sphere({ position, rotation, size, color }: GeometryParams) {
+function Sphere({
+  position,
+  rotation,
+  size,
+  color,
+  sectionNumber = null,
+}: GeometryParams) {
   const ref = useRef<Object3D | null>(null);
+  const dispatch: AppDispatch = useDispatch();
   const [isPointed, setIsPointed] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+
+  const activeSection = useSelector(
+    (state: RootState) => state.base.activeSection
+  );
+
+  function clickSphere(sectionNumber: SectionNumbers | null) {
+    if (activeSection === sectionNumber) {
+      dispatch(baseActions.setActiveSection(null));
+    } else {
+      dispatch(baseActions.setActiveSection(sectionNumber));
+    }
+  }
+
+  const isSelected = activeSection === sectionNumber;
 
   return (
     <mesh
       ref={ref}
       position={position}
       rotation={rotation}
-      onPointerOver={(e) => setIsPointed(true)}
-      onPointerOut={(e) => setIsPointed(false)}
-      onClick={(e) => (isSelected ? setIsSelected(false) : setIsSelected(true))}
+      onPointerOver={() => setIsPointed(true)}
+      onPointerOut={() => setIsPointed(false)}
+      onClick={() => clickSphere(sectionNumber)}
     >
       <sphereGeometry args={size} />
       <meshStandardMaterial
@@ -74,7 +96,13 @@ function Tunnel({ color, angle }: TunnelProps) {
   );
 }
 
-function Section({ position, rotation, size, color }: GeometryParams) {
+function Section({
+  position,
+  rotation,
+  size,
+  color,
+  sectionNumber,
+}: GeometryParams) {
   return (
     <group position={position} rotation={rotation}>
       <Cylinder
@@ -88,6 +116,7 @@ function Section({ position, rotation, size, color }: GeometryParams) {
         rotation={[0, 0, 0]}
         size={size}
         color={color}
+        sectionNumber={sectionNumber}
       />
     </group>
   );
@@ -114,10 +143,13 @@ export default function Base() {
   const dispatch: AppDispatch = useDispatch();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const baseColor = "aliceblue";
+  const baseStructure = useSelector((state: RootState) => state.base.sections);
 
-  const baseStructure = { 1: [1, 2, 5, 6, 7, 8] }; // FOR TEST
+  //const baseStructure = { 1: [1, 2, 5, 6, 7, 8] }; // FOR TEST
+  let baseCircle1 = [...baseStructure["1"]];
+  baseCircle1.sort();
 
-  const circle_1: ReactNode[] = baseStructure["1"].map((item) => {
+  const circle_1: ReactNode[] = baseCircle1.map((item) => {
     let angle = ((Number(item) - 1) * Math.PI) / 4;
 
     const stationRadius = 2;
@@ -131,14 +163,13 @@ export default function Base() {
         rotation={[0, 0, -angle]}
         size={[0.7, 8, 8]}
         color={baseColor}
+        sectionNumber={item}
         key={item}
       ></Section>
     );
   });
 
-  baseStructure["1"] = baseStructure["1"].sort();
-
-  const tunnels_1: ReactNode[] = baseStructure["1"].map((item, index, arr) => {
+  const tunnels_1: ReactNode[] = baseCircle1.map((item, index, arr) => {
     let angle = ((Number(item - 1) - 1) * Math.PI) / 4 - Math.PI / 4;
     if (index > 0) {
       if (Number(item) - Number(arr[index - 1]) === 1) {
@@ -164,6 +195,7 @@ export default function Base() {
                 rotation={[Math.PI / 2, 0, 0]}
                 size={[1, 8, 8]}
                 color={baseColor}
+                sectionNumber={0}
               />
               {tunnels_1}
               {circle_1}

@@ -63,6 +63,29 @@ body {
   min-height: 0;
 }
 
+.bottomPanel{
+  width: 100%;
+  min-height: 5rem;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-left: 40px;
+}
+
+.infoSection{
+  width: 20%;
+  background-color: black;
+  margin: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 3px var(--main-color-light), 0 0 3px var(--main-color-light) inset;
+  border: 2px solid var(--main-color-light);
+  color: white;
+  font-family: arial;
+  text-align: center;
+}
+
 .mainButton {
   color: #fff;
   text-align: center;
