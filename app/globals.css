@@ -79,11 +79,16 @@ body {
   background-color: black;
   margin: 1rem;
   border-radius: 1rem;
-  box-shadow: 0 0 3px var(--main-color-light), 0 0 3px var(--main-color-light) inset;
-  border: 2px solid var(--main-color-light);
+  box-shadow: 0 0 3px var(--main-color-light), 0 0 1px 1px var(--main-color-light) inset;  border: 2px solid var(--main-color-light);
   color: white;
   font-family: arial;
-  text-align: center;
+}
+
+.pInSection{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  border-bottom: 1px solid gray;
+  font-family: system-ui;
 }
 
 .mainButton {
