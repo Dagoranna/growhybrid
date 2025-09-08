@@ -6,6 +6,8 @@ import * as actions from "../../../app/store/slices/mainSlice";
 import FormErrors from "../FormErrors";
 import stylesFormWrapper from "../forms.module.css";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function AuthForm() {
   const dispatch: AppDispatch = useDispatch();
 
@@ -73,7 +75,7 @@ export default function AuthForm() {
       case "Login": {
         console.log("login");
         console.log(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`);
-        let response = await fetch("/api/auth/login", {
+        /* let response = await fetch("/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -83,6 +85,16 @@ export default function AuthForm() {
             email: email,
             password: password,
             rememberMe: rememberMe,
+          }),
+        });*/
+        const response = await fetch(`${apiUrl}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            callbackUrl: "/",
+            email,
+            password,
+            rememberMe,
           }),
         });
 
