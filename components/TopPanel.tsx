@@ -8,6 +8,8 @@ import AuthForm from "./forms/AuthForm/AuthForm";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function TopPanel() {
   const dispatch: AppDispatch = useDispatch();
 
@@ -19,18 +21,15 @@ export default function TopPanel() {
   async function handleLogout() {
     dispatch(actions.setScreen("home"));
     //`${process.env.NEXT_PUBLIC_API_URL}/auth/...`,
-    let response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/deleteauthtoken`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-        }),
-      }
-    );
+    const response = await fetch(`${apiUrl}/api/auth/deleteauthtoken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    });
 
     let baseResponse = await response.json();
 

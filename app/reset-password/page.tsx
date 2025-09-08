@@ -6,6 +6,8 @@ import FormWrapper from "../../components/forms/FormWrapper";
 import FormErrors from "../../components/forms/FormErrors";
 import stylesFormWrapper from "../../components/forms/forms.module.css";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 function ResetPasswordPage() {
   const token = useSearchParams().get("token");
   const email = useSearchParams().get("email");
@@ -25,7 +27,7 @@ function ResetPasswordPage() {
   useEffect(() => {
     async function checkToken() {
       try {
-        const response = await fetch("/api/auth/checkresettoken", {
+        const response = await fetch(`${apiUrl}/api/auth/checkresettoken`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -87,7 +89,7 @@ function ResetPasswordPage() {
       return;
     }
 
-    let response = await fetch("/api/auth/resethandling", {
+    const response = await fetch(`${apiUrl}/api/auth/resethandling`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

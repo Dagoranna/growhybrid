@@ -71,22 +71,7 @@ export default function AuthForm() {
 
     switch (formMode) {
       //let response = await fetch("/api/auth/login", {
-      //`${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       case "Login": {
-        console.log("login");
-        console.log(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`);
-        /* let response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            callbackUrl: "/",
-            email: email,
-            password: password,
-            rememberMe: rememberMe,
-          }),
-        });*/
         const response = await fetch(`${apiUrl}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -115,21 +100,18 @@ export default function AuthForm() {
         break;
       }
       case "Register": {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              callbackUrl: "/",
-              name: userName,
-              email: email,
-              password: password,
-            }),
-          }
-        );
+        const response = await fetch(`${apiUrl}/api/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            callbackUrl: "/",
+            name: userName,
+            email: email,
+            password: password,
+          }),
+        });
 
         const baseResponse = await response.json();
 
@@ -143,19 +125,16 @@ export default function AuthForm() {
         break;
       }
       case "Reset password": {
-        let response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/resetpass`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              callbackUrl: "/",
-              email: email,
-            }),
-          }
-        );
+        let response = await fetch(`${apiUrl}/api/auth/resetpass`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            callbackUrl: "/",
+            email: email,
+          }),
+        });
 
         let baseResponse = await response.json();
 
