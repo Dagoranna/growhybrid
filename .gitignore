@@ -18,6 +18,24 @@
 # production
 /build
 
+# Capacitor / Android
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/
+android/.cxx/
+android/.gradle/
+android/local.properties
+android/.idea/
+android/*.iml
+
+# iOS
+ios/Pods/
+ios/build/
+ios/DerivedData/
+ios/*.xcworkspace
+ios/*.xcodeproj/project.xcworkspace
+ios/*.xcuserdata
+
 # misc
 .DS_Store
 *.pem
