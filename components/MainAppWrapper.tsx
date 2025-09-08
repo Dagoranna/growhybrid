@@ -22,8 +22,9 @@ export default function MainAppWrapper({ children }: MyProps) {
   useEffect(() => {
     console.log("my url");
     console.log(`${apiUrl}/auth/checkauthtoken`);
+    // let response = await fetch(`${apiUrl}/auth/checkauthtoken`, {
     async function checkAuthToken() {
-      let response = await fetch(`${apiUrl}/auth/checkauthtoken`, {
+      let response = await fetch(`/api/auth/checkauthtoken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
