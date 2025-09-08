@@ -18,6 +18,8 @@ export default function MainAppWrapper({ children }: MyProps) {
   const loginState = useSelector((state: RootState) => state.main.loginState);
 
   useEffect(() => {
+    console.log("my url");
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/auth/checkauthtoken`);
     async function checkAuthToken() {
       let response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/checkauthtoken`,

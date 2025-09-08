@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "SproutsOfLife",
   webDir: "out",
   server: {
-    url: "https://floppy-melons-tickle.loca.lt",
+    url: "https://growhybrid.vercel.app",
     cleartext: true,
   },
 };
