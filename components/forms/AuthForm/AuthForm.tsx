@@ -69,24 +69,22 @@ export default function AuthForm() {
 
     switch (formMode) {
       //let response = await fetch("/api/auth/login", {
+      //`${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
       case "Login": {
         console.log("login");
         console.log(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`);
-        let response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              callbackUrl: "/",
-              email: email,
-              password: password,
-              rememberMe: rememberMe,
-            }),
-          }
-        );
+        let response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            callbackUrl: "/",
+            email: email,
+            password: password,
+            rememberMe: rememberMe,
+          }),
+        });
 
         let baseResponse = await response.json();
 
