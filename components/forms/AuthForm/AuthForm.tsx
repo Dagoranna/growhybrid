@@ -70,6 +70,8 @@ export default function AuthForm() {
     switch (formMode) {
       //let response = await fetch("/api/auth/login", {
       case "Login": {
+        console.log("login");
+        console.log(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`);
         let response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
           {

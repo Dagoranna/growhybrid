@@ -11,7 +11,7 @@ type MyProps = {
   children: React.ReactNode;
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const apiUrlCheckAuthToken = `${process.env.NEXT_PUBLIC_API_URL}/auth/checkauthtoken`;
 
 export default function MainAppWrapper({ children }: MyProps) {
   const dispatch = useDispatch();
@@ -21,10 +21,10 @@ export default function MainAppWrapper({ children }: MyProps) {
 
   useEffect(() => {
     console.log("my url");
-    console.log(`${apiUrl}/auth/checkauthtoken`);
+    console.log(apiUrlCheckAuthToken);
     // let response = await fetch(`${apiUrl}/auth/checkauthtoken`, {
     async function checkAuthToken() {
-      let response = await fetch(`/api/auth/checkauthtoken`, {
+      let response = await fetch(apiUrlCheckAuthToken, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
