@@ -14,6 +14,8 @@
 
   transform-origin: top right;
   animation: slideDown 0.5s ease forwards;
+
+  pointer-events: auto;
 }
 
 @keyframes slideDown {

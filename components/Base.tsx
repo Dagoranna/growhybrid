@@ -201,16 +201,19 @@ export default function Base() {
     if (name.length === 0) return;
     dispatch(baseActions.setBaseName(name));
     setShowForm(false);
-    let response = await fetch("/api/base/createBase", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userEmail,
-        baseName: name,
-      }),
-    });
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/base/createBase`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: userEmail,
+          baseName: name,
+        }),
+      }
+    );
     let baseResponse = await response.json();
     if (response.ok) {
       if (baseResponse.baseState === 1) {

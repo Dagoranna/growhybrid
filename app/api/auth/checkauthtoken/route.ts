@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { cookies, headers } from "next/headers";
+//export const dynamic = "force-dynamic";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,

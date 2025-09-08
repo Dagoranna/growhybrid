@@ -32,6 +32,7 @@ export default function FormWrapper({
   function onClose() {
     if (addOnClose) addOnClose();
     setIsOpen(false);
+    console.log("closing");
   }
 
   function onOpen() {
@@ -60,6 +61,7 @@ export default function FormWrapper({
             id={closeId}
             className={styles.closeButton}
             onClick={() => onClose()}
+            style={{ zIndex: "1010" }}
           >
             &#x2716;
           </button>

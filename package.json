@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
     "@react-three/drei": "^10.7.4",
     "@react-three/fiber": "^9.3.0",
     "@reduxjs/toolkit": "^2.8.2",
