@@ -71,17 +71,21 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding-left: 40px;
 }
 
 .infoSection{
   width: 20%;
-  background-color: black;
-  margin: 1rem;
+  margin: 0.5rem;
   border-radius: 1rem;
+
+  font-family: arial;
+
+  background-color: black;
   box-shadow: 0 0 3px var(--main-color-light), 0 0 1px 1px var(--main-color-light) inset;  border: 2px solid var(--main-color-light);
   color: white;
-  font-family: arial;
+  
+  overflow-y: auto;
+  scrollbar-width: none;  
 }
 
 .pInSection{
@@ -160,7 +164,7 @@ body {
   margin: 5rem;
   padding: 2rem;
   min-width: 0;
-  min-height: 0;
+  min-height: 200px;
 }
 
 .blackWindow{
@@ -261,3 +265,4 @@ body {
 .resetPassForm{
   @apply flex flex-row justify-center;
 }
+

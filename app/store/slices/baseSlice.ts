@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { logout } from "../actions";
 
 export type SectionNumbers = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type SectionJSON = Record<string, SectionNumbers[]>;
@@ -48,6 +49,9 @@ const baseSlice = createSlice({
     setSections_3: (state, action: PayloadAction<SectionNumbers[]>) => {
       state.sections_3 = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => initialState);
   },
 });
 

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import FormWrapper from "./forms/FormWrapper";
 import AuthForm from "./forms/AuthForm/AuthForm";
+import { logout } from "../app/store/actions";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
@@ -20,7 +21,6 @@ export default function TopPanel() {
 
   async function handleLogout() {
     dispatch(actions.setScreen("home"));
-    //`${process.env.NEXT_PUBLIC_API_URL}/auth/...`,
     const response = await fetch(`${apiUrl}/api/auth/deleteauthtoken`, {
       method: "POST",
       headers: {
@@ -35,9 +35,7 @@ export default function TopPanel() {
 
     if (response.ok) {
       if (baseResponse.logoutState === 1) {
-        dispatch(actions.setLoginState(false));
-        dispatch(actions.setUserEmail(""));
-        dispatch(actions.setUserName(""));
+        dispatch(logout());
       } else {
         console.log(baseResponse.message);
       }

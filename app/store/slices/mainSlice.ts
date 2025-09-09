@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { logout } from "../actions";
 
 type ScreenType = "home" | "base" | "farmModule" | "orbit" | "market";
 
@@ -32,6 +33,9 @@ const mainSlice = createSlice({
     setScreen: (state, action: PayloadAction<ScreenType>) => {
       state.screen = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => initialState);
   },
 });
 

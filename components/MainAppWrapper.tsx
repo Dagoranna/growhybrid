@@ -5,7 +5,6 @@ import TopPanel from "./TopPanel";
 import MainBlock from "./MainBlock";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
-import type { RootState } from "../app/store/store";
 
 type MyProps = {
   children: React.ReactNode;
@@ -15,12 +14,8 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function MainAppWrapper({ children }: MyProps) {
   const dispatch = useDispatch();
-  const userEmail = useSelector((state: RootState) => state.main.userEmail);
-  const userName = useSelector((state: RootState) => state.main.userName);
-  const loginState = useSelector((state: RootState) => state.main.loginState);
 
   useEffect(() => {
-    // let response = await fetch(`${apiUrl}/auth/checkauthtoken`, {
     async function checkAuthToken() {
       const response = await fetch(`${apiUrl}/api/auth/checkauthtoken`, {
         method: "POST",
