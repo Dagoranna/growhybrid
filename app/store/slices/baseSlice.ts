@@ -1,17 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { logout } from "../actions";
 
-export type SectionNumbers = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-type SectionJSON = Record<string, SectionNumbers[]>;
+type SectionJSON = Record<string, number[]>;
 
 interface MyBaseState {
   baseName: string | null;
-  activeSection: SectionNumbers | null;
+  activeSection: number | null;
   circlesCount: number;
   sectionCount: number;
-  sections_1: SectionNumbers[];
-  sections_2: SectionNumbers[];
-  sections_3: SectionNumbers[];
+  sections_1: number[];
+  sections_2: number[];
+  sections_3: number[];
 }
 
 const initialState: MyBaseState = {
@@ -31,7 +30,7 @@ const baseSlice = createSlice({
     setBaseName: (state, action: PayloadAction<string>) => {
       state.baseName = action.payload;
     },
-    setActiveSection: (state, action: PayloadAction<SectionNumbers | null>) => {
+    setActiveSection: (state, action: PayloadAction<number | null>) => {
       state.activeSection = action.payload;
     },
     setCirclesCount: (state, action: PayloadAction<number>) => {
@@ -40,13 +39,13 @@ const baseSlice = createSlice({
     setSectionCount: (state, action: PayloadAction<number>) => {
       state.sectionCount = action.payload;
     },
-    setSections_1: (state, action: PayloadAction<SectionNumbers[]>) => {
+    setSections_1: (state, action: PayloadAction<number[]>) => {
       state.sections_1 = action.payload;
     },
-    setSections_2: (state, action: PayloadAction<SectionNumbers[]>) => {
+    setSections_2: (state, action: PayloadAction<number[]>) => {
       state.sections_2 = action.payload;
     },
-    setSections_3: (state, action: PayloadAction<SectionNumbers[]>) => {
+    setSections_3: (state, action: PayloadAction<number[]>) => {
       state.sections_3 = action.payload;
     },
   },

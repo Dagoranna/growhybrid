@@ -8,27 +8,17 @@ import { FC, ReactNode } from "react";
 import { Object3D, Group } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Edges, Html } from "@react-three/drei";
-import type { SectionNumbers } from "../app/store/slices/baseSlice";
 import type { RootState, AppDispatch } from "../app/store/store";
 import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import FormErrors from "./forms/FormErrors";
 
-type Size = number[] & { length: 3 | 4 };
-type Coords = [number, number, number];
-type GeometryParams = {
-  position: Coords;
-  rotation: Coords;
-  size: Size;
+import type { GeometryParams } from "./geometryForms/geometryTypes";
+import Cylinder from "./geometryForms/Cylinder";
+import Sphere from "./geometryForms/Sphere";
+import Torus from "./geometryForms/Torus";
+import { OrbitControls } from "@react-three/drei";
 
-  color?: string;
-  children?: ReactNode;
-  sectionNumber?: SectionNumbers | null;
-};
-
-type TunnelProps = {
-  color: string;
-  angle: number;
-};
+const stationRadius = 2;
 
 type GetNameFormProps = {
   value: string;
@@ -36,89 +26,20 @@ type GetNameFormProps = {
   onSubmit: (val: string) => void;
 };
 
-function Sphere({
-  position,
-  rotation,
-  size,
-  color,
-  sectionNumber = null,
-  children,
-}: GeometryParams) {
-  const ref = useRef<Object3D | null>(null);
-  const dispatch: AppDispatch = useDispatch();
-  const [isPointed, setIsPointed] = useState(false);
-
-  const activeSection = useSelector(
-    (state: RootState) => state.base.activeSection
-  );
-
-  function clickSphere(sectionNumber: SectionNumbers | null) {
-    if (activeSection === sectionNumber) {
-      dispatch(baseActions.setActiveSection(null));
-    } else {
-      dispatch(baseActions.setActiveSection(sectionNumber));
-    }
-  }
-
-  const isSelected = activeSection === sectionNumber;
-
-  return (
-    <mesh
-      ref={ref}
-      position={position}
-      rotation={rotation}
-      onPointerOver={() => setIsPointed(true)}
-      onPointerOut={() => setIsPointed(false)}
-      onClick={() => clickSphere(sectionNumber)}
-    >
-      <sphereGeometry args={size} />
-      <meshStandardMaterial
-        color={isSelected ? "DodgerBlue" : color}
-        metalness={0.6}
-        roughness={0.2}
-      />
-      <Edges
-        color={isPointed ? "aliceblue" : isSelected ? "yellow" : "black"}
-        scale={isPointed ? 1.02 : 1.0}
-      />
-      {children}
-    </mesh>
-  );
-}
-
-function Cylinder({ position, rotation, size, color }: GeometryParams) {
-  return (
-    <mesh position={position} rotation={rotation}>
-      {/* args: radiusTop, radiusBottom, height, radialSegments */}
-      <cylinderGeometry args={size} />
-      <meshStandardMaterial color={color} metalness={1} roughness={0.4} />
-    </mesh>
-  );
-}
-
-function Tunnel({ color, angle }: TunnelProps) {
-  return (
-    <mesh rotation={[0, 0, -angle]}>
-      {/* args = [radius, tube, radialSegments, tubularSegments, arc] */}
-      <torusGeometry args={[2, 0.2, 8, 8, Math.PI / 4]} />
-      <meshStandardMaterial color={color} metalness={1} roughness={0.4} />
-    </mesh>
-  );
-}
-
 function Section({
   position,
   rotation,
   size,
   color,
   sectionNumber,
+  textColor,
 }: GeometryParams) {
   return (
     <group position={position} rotation={rotation}>
       <Cylinder
-        position={[0, -size[2] / 8, 0]}
+        position={[0, -size[0], 0]}
         rotation={[0, 0, 0]}
-        size={[0.2, 0.3, size[1] / 4, 8]}
+        size={[0.2, 0.2, size[0] * 2, 8]}
         color={color}
       />
       <Sphere
@@ -128,6 +49,15 @@ function Section({
         color={color}
         sectionNumber={sectionNumber}
       />
+      <Html
+        transform
+        position={[0, 0.3, 0.65]}
+        rotation={[0.8 * Math.PI, Math.PI, 0]}
+      >
+        <div style={{ color: textColor, userSelect: "none" }}>
+          {sectionNumber}
+        </div>
+      </Html>
     </group>
   );
 }
@@ -142,7 +72,7 @@ function RotatingGroup({ children }: { children: ReactNode }) {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.z += delta * 0.5; // скорость вращения
+      ref.current.rotation.z += -delta * 0.5; // скорость вращения
     }
   });
 
@@ -248,6 +178,8 @@ export default function Base() {
             baseActions.setSectionCount(baseResponse.message.sections_count)
           );
           dispatch(baseActions.setSections_1(baseResponse.message.sections_1));
+          dispatch(baseActions.setSections_2(baseResponse.message.sections_2));
+          dispatch(baseActions.setSections_3(baseResponse.message.sections_3));
         } else {
           setShowForm(true);
         }
@@ -261,12 +193,15 @@ export default function Base() {
   }, []);
 
   let baseCircle1 = [...sections_1];
-  baseCircle1.sort();
+  baseCircle1.sort((a, b) => a - b);
+
+  let baseCircle2 = [...sections_2];
+  baseCircle2.sort((a, b) => a - b);
+  console.log(baseCircle2);
 
   const circle_1: ReactNode[] = baseCircle1.map((item) => {
     let angle = ((Number(item) - 1) * Math.PI) / 4;
 
-    const stationRadius = 2;
     return (
       <Section
         position={[
@@ -275,23 +210,92 @@ export default function Base() {
           0,
         ]}
         rotation={[0, 0, -angle]}
-        size={[0.7, 8, 8]}
+        size={[0.7]}
         color={baseColor}
         sectionNumber={item}
+        textColor={baseColor}
         key={item}
       ></Section>
     );
   });
 
-  const tunnels_1: ReactNode[] = baseCircle1.map((item, index, arr) => {
-    let angle = ((Number(item - 1) - 1) * Math.PI) / 4 - Math.PI / 4;
+  const circle_2: ReactNode[] = baseCircle2.map((item) => {
+    let angle = ((Number(item) - 9) * Math.PI) / 4;
+
+    return (
+      <Section
+        position={[
+          2 * stationRadius * Math.sin(angle),
+          2 * stationRadius * Math.cos(angle),
+          0,
+        ]}
+        rotation={[0, 0, -angle]}
+        size={[0.7]}
+        color={baseColor}
+        sectionNumber={item}
+        textColor={baseColor}
+        key={item}
+      ></Section>
+    );
+  });
+
+  const torus_1: ReactNode[] = baseCircle1.map((item, index, arr) => {
+    let angle = ((item - 2) * Math.PI) / 4 - Math.PI / 4;
     if (index > 0) {
       if (Number(item) - Number(arr[index - 1]) === 1) {
-        return <Tunnel color={baseColor} angle={angle} key={item} />;
+        return (
+          <Torus
+            radius={stationRadius}
+            color={baseColor}
+            angle={angle}
+            key={item}
+          />
+        );
       }
     } else {
       if (arr.at(-1) == 8) {
-        return <Tunnel color={baseColor} angle={angle} key={item} />;
+        return (
+          <Torus
+            radius={stationRadius}
+            color={baseColor}
+            angle={angle}
+            key={item}
+          />
+        );
+      }
+    }
+    return null;
+  });
+
+  const torus_2: ReactNode[] = baseCircle2.map((item, index, arr) => {
+    const itemInCircle = item - 8;
+    let angle = ((itemInCircle - 2) * Math.PI) / 4 - Math.PI / 4;
+    console.log(item + " second angle = " + angle);
+    if (index > 0) {
+      console.log("index > 0");
+      if (item - arr[index - 1] === 1) {
+        console.log("111");
+        return (
+          <Torus
+            radius={2 * stationRadius}
+            color={baseColor}
+            angle={angle}
+            key={item}
+          />
+        );
+      }
+    } else {
+      console.log("index = 0");
+      if (arr.at(-1) == 16) {
+        console.log("2");
+        return (
+          <Torus
+            radius={2 * stationRadius}
+            color={baseColor}
+            angle={angle}
+            key={item}
+          />
+        );
       }
     }
     return null;
@@ -301,22 +305,36 @@ export default function Base() {
     <div className="centerWindow glass self-center">
       <div className="blackWindow text-center text-white">
         {
-          <Canvas ref={canvasRef} className="nightSky">
+          <Canvas
+            ref={canvasRef}
+            className="nightSky"
+            camera={{
+              fov: 45,
+              position: [0, 0, 8],
+              near: 0.1,
+              far: 100,
+            }}
+          >
+            <OrbitControls />
             <directionalLight position={[-2, 1, 1]} intensity={2} />
             <RotatingGroup>
               <Sphere
                 position={[0, 0, 0]}
                 rotation={[Math.PI / 2, 0, 0]}
-                size={[1, 8, 8]}
+                size={[1]}
                 color={baseColor}
                 sectionNumber={0}
               >
                 <Html transform position={[0, 1, 0]}>
-                  <div style={{ color: baseColor }}>{baseName}</div>
+                  <div style={{ color: baseColor, userSelect: "none" }}>
+                    {baseName}
+                  </div>
                 </Html>
               </Sphere>
-              {tunnels_1}
+              {torus_1}
               {circle_1}
+              {torus_2}
+              {circle_2}
             </RotatingGroup>
           </Canvas>
         }

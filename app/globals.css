@@ -95,6 +95,11 @@ body {
   font-family: system-ui;
 }
 
+.pInSectionName{
+  color: var(--main-color-light);
+  font-weight: bold;
+}
+
 .mainButton {
   color: #fff;
   text-align: center;
@@ -153,7 +158,8 @@ body {
   overflow: auto;
   border-radius: 1rem;
   padding: 1rem;
-  
+
+  scrollbar-width: thin;
 }
 
 .centerWindow{
@@ -241,6 +247,8 @@ body {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   border: 2px solid color-mix(in srgb, var(--main-color) 25%, transparent);
+  
+  scrollbar-color: var(--main-color-light) transparent;
 }
 
 .authInputFields {

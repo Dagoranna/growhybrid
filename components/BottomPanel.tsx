@@ -7,7 +7,6 @@ import { FC, ReactNode } from "react";
 import { Object3D } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Paw from "./designelems/Paw";
-import type { SectionNumbers } from "../app/store/slices/baseSlice";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
@@ -19,7 +18,7 @@ function SelectedSectionInfo() {
   return (
     <div className="infoSection">
       <p className="pInSection">
-        Selected section:{" "}
+        <span className="pInSectionName">Selected section: </span>
         {activeSection === null
           ? "none"
           : activeSection === 0
@@ -39,13 +38,22 @@ function StationInfo() {
   );
   const baseName = useSelector((state: RootState) => state.base.baseName);
   const sections_1 = useSelector((state: RootState) => state.base.sections_1);
+  const sections_2 = useSelector((state: RootState) => state.base.sections_2);
   return (
     <div className="infoSection">
-      <p className="pInSection">Base name: {baseName}</p>
-      <p className="pInSection">Circles: {circlesCount}</p>
-      <p className="pInSection">Sections built: {sectionCount}</p>
       <p className="pInSection">
-        Sections working: {sections_1.map((item) => ` ${item} `)}
+        <span className="pInSectionName">Base name:</span> {baseName}
+      </p>
+      <p className="pInSection">
+        <span className="pInSectionName">Circles:</span> {circlesCount}
+      </p>
+      <p className="pInSection">
+        <span className="pInSectionName">Sections built:</span> {sectionCount}
+      </p>
+      <p className="pInSection">
+        <span className="pInSectionName">Sections working:</span>{" "}
+        {sections_1.map((item) => ` ${item} `)}
+        {sections_2.map((item) => ` ${item} `)}
       </p>
     </div>
   );

@@ -58,8 +58,7 @@ export default function TopPanel() {
 
       {loginState && (
         <div style={{ order: "1", marginLeft: "auto" }}>
-          Hello,{" "}
-          <span style={{ fontWeight: "bold", color: "gold" }}>{userName}</span>!
+          Hello, <span style={{ fontWeight: "bold" }}>{userName}</span>!
         </div>
       )}
 
