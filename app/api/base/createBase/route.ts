@@ -6,14 +6,14 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
-interface baseData {
+/*interface baseData {
   station_name: string;
   circles_count: number;
   sections_count: number;
   sections_1: number[];
   sections_2: number[];
   sections_3: number[];
-}
+}*/
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -66,16 +66,13 @@ async function getUserId(email: string): Promise<number | null | false> {
 }
 
 async function createBase(userId: number, baseName: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("stations")
-    .insert([
-      {
-        owner_id: userId,
-        sections_count: 4,
-        station_name: baseName,
-        sections_1: [1, 2, 5, 6],
-      },
-    ]);
+  const { error } = await supabase.from("stations").insert([
+    {
+      owner_id: userId,
+      sections_count: 0,
+      station_name: baseName,
+    },
+  ]);
 
   if (error) {
     console.error("Error:", error);
@@ -84,18 +81,3 @@ async function createBase(userId: number, baseName: string): Promise<boolean> {
 
   return true;
 }
-
-/*
-async function saveUserToBase(email: string, password: string, token: string) {
-  const { error } = await supabase
-    .from("advancedauth")
-    .insert([{ email: email, passwordhash: password, authtoken: token }]);
-
-  if (error) {
-    console.error("Error:", error);
-    return false;
-  } else {
-    return true;
-  }
-}
-*/

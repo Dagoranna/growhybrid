@@ -4,6 +4,82 @@ import React from "react";
 import { useState } from "react";
 import styles from "./forms.module.css";
 import Paw from "../designelems/Paw";
+import { createPortal } from "react-dom";
+
+type MyProps = {
+  formName: string;
+  children: React.ReactNode;
+  isFormOpen?: boolean;
+  addButtonStyle?: Record<string, string>;
+  addFormStyle?: Record<string, string>;
+  addOnClose?: ((...args: any[]) => void) | null;
+  addButtonFunc?: ((...args: any[]) => void) | null;
+};
+
+export default function FormWrapper({
+  formName,
+  children,
+  isFormOpen = false,
+  addButtonStyle = {},
+  addFormStyle = {},
+  addOnClose = null,
+  addButtonFunc = null,
+}: MyProps) {
+  const [isOpen, setIsOpen] = useState(isFormOpen);
+  // const isOpen = isFormOpen;
+  let buttonId = formName.replace(/\s+/g, "") + "Button";
+  let closeId = formName.replace(/\s+/g, "") + "FormClose";
+
+  function onClose() {
+    if (addOnClose) addOnClose();
+    setIsOpen(false);
+    console.log("closing");
+  }
+
+  function onOpen() {
+    setIsOpen(true);
+    if (addButtonFunc) addButtonFunc();
+  }
+
+  return (
+    <>
+      {!isOpen && (
+        <button
+          id={buttonId}
+          className="mainButton"
+          onClick={() => onOpen()}
+          style={{ ...addButtonStyle }}
+        >
+          {formName}
+        </button>
+      )}
+      {isOpen &&
+        createPortal(
+          <div className={`modalWindow glass`} style={{ ...addFormStyle }}>
+            <button
+              id={closeId}
+              className={styles.closeButton}
+              onClick={() => onClose()}
+              style={{ zIndex: "1010" }}
+            >
+              &#x2716;
+            </button>
+            {children}
+            <Paw width={60} />
+          </div>,
+          document.body
+        )}
+    </>
+  );
+}
+
+/*
+"use client";
+
+import React from "react";
+import { useState } from "react";
+import styles from "./forms.module.css";
+import Paw from "../designelems/Paw";
 
 type MyProps = {
   formName: string;
@@ -72,3 +148,5 @@ export default function FormWrapper({
     </>
   );
 }
+
+*/

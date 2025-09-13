@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --main-color-light: #00CAFF;
+  --main-color-light: #00caff;
   --main-color: #2c96fa;
   --main-color-transp: color-mix(in srgb, var(--main-color) 20%, transparent);
   --main-color-dark: #22007e;
   --main-shadow: #c5f6ff;
 
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 * {
@@ -15,12 +15,14 @@
 }
 
 input {
-  background: rgba(255, 255, 255, 0.5);
-  color: #000;
+  background: var(--main-color-transp);
+  color: var(--main-color-dark);
   border: 1px solid color-mix(in srgb, var(--main-color) 30%, transparent);
-  border-radius: .1em;
+  border-radius: 0.1em;
   padding: 0.2em 0.5em;
   margin: 0.1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 ul {
@@ -37,11 +39,11 @@ body {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  height: 100svh;;
+  height: 100svh;
   min-height: 100svh;
 }
 
-.nightSky{
+.nightSky {
   background: url("/images/sky.webp") 0% 0% / cover;
 }
 
@@ -55,7 +57,7 @@ body {
   padding: 0.2rem;
 }
 
-.mainBlock{
+.mainBlock {
   flex: 1 auto;
   display: flex;
   flex-direction: column;
@@ -63,7 +65,7 @@ body {
   min-height: 0;
 }
 
-.bottomPanel{
+.bottomPanel {
   width: 100%;
   min-height: 5rem;
   border-top-left-radius: 2rem;
@@ -73,7 +75,7 @@ body {
   flex-wrap: nowrap;
 }
 
-.infoSection{
+.infoSection {
   width: 20%;
   margin: 0.5rem;
   border-radius: 1rem;
@@ -81,21 +83,24 @@ body {
   font-family: arial;
 
   background-color: black;
-  box-shadow: 0 0 3px var(--main-color-light), 0 0 1px 1px var(--main-color-light) inset;  border: 2px solid var(--main-color-light);
+  box-shadow:
+    0 0 3px var(--main-color-light),
+    0 0 1px 1px var(--main-color-light) inset;
+  border: 2px solid var(--main-color-light);
   color: white;
-  
+
   overflow-y: auto;
-  scrollbar-width: none;  
+  scrollbar-width: none;
 }
 
-.pInSection{
+.pInSection {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   border-bottom: 1px solid gray;
   font-family: system-ui;
 }
 
-.pInSectionName{
+.pInSectionName {
   color: var(--main-color-light);
   font-weight: bold;
 }
@@ -117,7 +122,7 @@ body {
   min-height: 2rem;
   align-self: center;
 
-  background: linear-gradient( var(--main-color-dark) 50%, var(--main-color) );
+  background: linear-gradient(var(--main-color-dark) 50%, var(--main-color));
   border: 0.1rem solid var(--main-color-dark);
   box-shadow: 0.1em 0.1em 0.2em var(--main-color-dark);
 }
@@ -131,11 +136,7 @@ body {
       var(--main-color-light) 50%,
       transparent 55%
     ),
-    linear-gradient(
-
-      var(--main-color-dark) 50%,
-      var(--main-color)
-    );
+    linear-gradient(var(--main-color-dark) 50%, var(--main-color));
   background-size:
     300% 100%,
     100% 100%;
@@ -148,7 +149,21 @@ body {
     0 0.1em 0.1em var(--main-color) inset;
 }
 
-.centerPaper{
+.infoLinkButton {
+  width: 100%;
+  text-decoration: underline;
+  color: var(--main-color-light);
+  font-weight: bold;
+}
+
+.infoTitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+.centerPaper {
   width: 30%;
   height: 50svh;
   margin-top: 10svh;
@@ -158,11 +173,9 @@ body {
   overflow: auto;
   border-radius: 1rem;
   padding: 1rem;
-
-  scrollbar-width: thin;
 }
 
-.centerWindow{
+.centerWindow {
   display: flex;
   width: calc(100% - 10rem);
   flex: 1;
@@ -173,82 +186,86 @@ body {
   min-height: 200px;
 }
 
-.blackWindow{
-  display:flex;
+.glass {
+  background: color-mix(in srgb, var(--main-color-light) 15%, transparent);
+  box-shadow:
+    0 0 4px var(--main-shadow),
+    0 0 8px var(--main-shadow),
+    0 0 12px white,
+    0 0 16px white,
+    -0.2em -0.2em 1em var(--main-color-light) inset;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  border: 2px solid color-mix(in srgb, var(--main-color) 25%, transparent);
+
+  scrollbar-color: var(--main-color-light) transparent;
+  scrollbar-width: thin;
+}
+
+.glass input {
+  border: 2px solid var(--main-color-dark);
+  box-shadow: 0 0 0.1rem var(--main-color);
+  background: color-mix(in srgb, var(--main-shadow) 45%, transparent);
+}
+
+.modalWindow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /*move to center*/
+
+  max-width: 50vw;
+  max-height: 50vh;
+  width: fit-content;
+
+  padding: 0.5em;
+  border-radius: 1rem;
+
+  z-index: 10000;
+  animation: slideModal 0.5s ease forwards;
+}
+
+.blackWindow {
+  display: flex;
   background-color: black;
   flex: 1;
   border-radius: 3rem;
   box-shadow: 0 0 1rem var(--main-color-light) inset;
   border: 0.2rem solid var(--main-color-light);
   min-width: 0;
-  min-height: 0;  
-}
-
-@keyframes glint {
-  from {
-    background-position-x: +100%;
-  }
-  to {
-    background-position-x: -50%;
-  }
-}
-
-
-@keyframes slideHorizontal {
-  0% {
-    transform: scale(0,1);
-  }
-  100% {
-    transform: scale(1,1);
-  }
+  min-height: 0;
 }
 
 .mainButton:active {
   box-shadow: none;
 }
 
-.activeButton{
-  background: linear-gradient( white, var(--main-color) 50%, white );
+.activeButton {
+  background: linear-gradient(white, var(--main-color) 50%, white);
   border: 0.1rem solid var(--main-color-light);
   box-shadow: 0 0 0.5em 0.5em white;
-  color: var(--main-color-dark); 
+  color: var(--main-color-dark);
 }
 
-.activeButton:hover{
-  background: linear-gradient( white, var(--main-color) 50%, white );
+.activeButton:hover {
+  background: linear-gradient(white, var(--main-color) 50%, white);
   border: 0.1rem solid var(--main-color-light);
   box-shadow: 0 0 0.5em 0.5em white;
-  color: var(--main-color-dark);  
-  animation: none;  
+  color: var(--main-color-dark);
+  animation: none;
 }
 
-.inactiveButton{
+.inactiveButton {
   background: lightgray;
   box-shadow: 1px 1px 1px gray;
   border: 2px solid gray;
 }
 
-.inactiveButton:hover{
+.inactiveButton:hover {
   background: lightgray;
   box-shadow: 1px 1px 1px gray;
   border: 2px solid gray;
-  animation: none
-}
-
-
-
-.glass {
-  background: color-mix(in srgb, var(--main-color-light) 15%, transparent);
-  box-shadow: 0 0 4px var(--main-shadow),
-  0 0 8px var(--main-shadow),
-  0 0 12px white,
-  0 0 16px white,
-  -0.2em -0.2em 1em var(--main-color-light) inset;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  border: 2px solid color-mix(in srgb, var(--main-color) 25%, transparent);
-  
-  scrollbar-color: var(--main-color-light) transparent;
+  animation: none;
 }
 
 .authInputFields {
@@ -270,7 +287,33 @@ body {
   @apply flex flex-col;
 }
 
-.resetPassForm{
+.resetPassForm {
   @apply flex flex-row justify-center;
 }
 
+@keyframes glint {
+  from {
+    background-position-x: +100%;
+  }
+  to {
+    background-position-x: -50%;
+  }
+}
+
+@keyframes slideHorizontal {
+  0% {
+    transform: scale(0, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes slideModal {
+  0% {
+    transform: translate(-50%, -50%) scale(0, 1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1, 1);
+  }
+}

@@ -20,10 +20,7 @@ export default function OpenedFormWrapper({
   return (
     <>
       {!isClosed && (
-        <div
-          className={`${styles.baseTable} glass`}
-          style={{ ...addFormStyle }}
-        >
+        <div className={`glass modalWindow`} style={{ ...addFormStyle }}>
           <button
             className={styles.closeButton}
             onClick={() => setIsClosed(true)}

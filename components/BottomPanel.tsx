@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import { FC, ReactNode } from "react";
@@ -17,6 +18,7 @@ function SelectedSectionInfo() {
 
   return (
     <div className="infoSection">
+      <p className="pInSection infoTitle">Section info</p>
       <p className="pInSection">
         <span className="pInSectionName">Selected section: </span>
         {activeSection === null
@@ -41,6 +43,7 @@ function StationInfo() {
   const sections_2 = useSelector((state: RootState) => state.base.sections_2);
   return (
     <div className="infoSection">
+      <p className="pInSection infoTitle">Base info</p>
       <p className="pInSection">
         <span className="pInSectionName">Base name:</span> {baseName}
       </p>
@@ -52,10 +55,34 @@ function StationInfo() {
       </p>
       <p className="pInSection">
         <span className="pInSectionName">Sections working:</span>{" "}
-        {sections_1.map((item) => ` ${item} `)}
-        {sections_2.map((item) => ` ${item} `)}
+        {sections_1 ? sections_1.map((item) => ` ${item} `) : ""}
+        {sections_2 ? sections_2.map((item) => ` ${item} `) : ""}
       </p>
     </div>
+  );
+}
+
+function StationControl() {
+  const [showDataWindow, setShowDataWindow] = useState(false);
+
+  function buildSection() {
+    setShowDataWindow(true);
+  }
+
+  return (
+    <>
+      <div className="infoSection">
+        <p className="pInSection infoTitle">Base Control</p>
+        <button className="infoLinkButton" onClick={() => buildSection()}>
+          Build new section
+        </button>
+      </div>
+      {showDataWindow &&
+        createPortal(
+          <div className="modalWindow glass">Really?</div>,
+          document.body
+        )}
+    </>
   );
 }
 
@@ -66,6 +93,7 @@ export default function BottomPanel() {
     <div className="bottomPanel glass self-center">
       <StationInfo />
       <SelectedSectionInfo />
+      <StationControl />
       <Paw width={50} />
     </div>
   );

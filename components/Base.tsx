@@ -79,6 +79,14 @@ function RotatingGroup({ children }: { children: ReactNode }) {
   return <group ref={ref}>{children}</group>;
 }
 
+/*
+        style={{
+          width: "100%",
+          backgroundColor: "black",
+          color: "white",
+          border: "2px solid aliceblue",
+        }}
+*/
 function GetNameForm({ value, onChange, onSubmit }: GetNameFormProps) {
   return (
     <form
@@ -89,12 +97,6 @@ function GetNameForm({ value, onChange, onSubmit }: GetNameFormProps) {
       }}
     >
       <input
-        style={{
-          width: "100%",
-          backgroundColor: "black",
-          color: "white",
-          border: "2px solid aliceblue",
-        }}
         type="text"
         placeholder="Base name"
         value={value}
@@ -132,7 +134,7 @@ export default function Base() {
     dispatch(baseActions.setBaseName(name));
     setShowForm(false);
     let response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/base/createBase`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/base/createBase`,
       {
         method: "POST",
         headers: {
@@ -157,15 +159,18 @@ export default function Base() {
 
   useEffect(() => {
     async function checkBaseExistance() {
-      let response = await fetch("/api/base/getBaseData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-        }),
-      });
+      let response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/base/getBaseData`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: userEmail,
+          }),
+        }
+      );
       let baseResponse = await response.json();
 
       if (response.ok) {
@@ -192,115 +197,116 @@ export default function Base() {
     checkBaseExistance();
   }, []);
 
-  let baseCircle1 = [...sections_1];
-  baseCircle1.sort((a, b) => a - b);
+  let circle_1: ReactNode[] | null = null;
+  let torus_1: ReactNode[] | null = null;
+  if (sections_1) {
+    let baseCircle1 = [...sections_1];
+    baseCircle1.sort((a, b) => a - b);
 
-  let baseCircle2 = [...sections_2];
-  baseCircle2.sort((a, b) => a - b);
-  console.log(baseCircle2);
+    circle_1 = baseCircle1.map((item) => {
+      let angle = ((Number(item) - 1) * Math.PI) / 4;
 
-  const circle_1: ReactNode[] = baseCircle1.map((item) => {
-    let angle = ((Number(item) - 1) * Math.PI) / 4;
+      return (
+        <Section
+          position={[
+            stationRadius * Math.sin(angle),
+            stationRadius * Math.cos(angle),
+            0,
+          ]}
+          rotation={[0, 0, -angle]}
+          size={[0.7]}
+          color={baseColor}
+          sectionNumber={item}
+          textColor={baseColor}
+          key={item}
+        ></Section>
+      );
+    });
 
-    return (
-      <Section
-        position={[
-          stationRadius * Math.sin(angle),
-          stationRadius * Math.cos(angle),
-          0,
-        ]}
-        rotation={[0, 0, -angle]}
-        size={[0.7]}
-        color={baseColor}
-        sectionNumber={item}
-        textColor={baseColor}
-        key={item}
-      ></Section>
-    );
-  });
-
-  const circle_2: ReactNode[] = baseCircle2.map((item) => {
-    let angle = ((Number(item) - 9) * Math.PI) / 4;
-
-    return (
-      <Section
-        position={[
-          2 * stationRadius * Math.sin(angle),
-          2 * stationRadius * Math.cos(angle),
-          0,
-        ]}
-        rotation={[0, 0, -angle]}
-        size={[0.7]}
-        color={baseColor}
-        sectionNumber={item}
-        textColor={baseColor}
-        key={item}
-      ></Section>
-    );
-  });
-
-  const torus_1: ReactNode[] = baseCircle1.map((item, index, arr) => {
-    let angle = ((item - 2) * Math.PI) / 4 - Math.PI / 4;
-    if (index > 0) {
-      if (Number(item) - Number(arr[index - 1]) === 1) {
-        return (
-          <Torus
-            radius={stationRadius}
-            color={baseColor}
-            angle={angle}
-            key={item}
-          />
-        );
+    torus_1 = baseCircle1.map((item, index, arr) => {
+      let angle = ((item - 2) * Math.PI) / 4 - Math.PI / 4;
+      if (index > 0) {
+        if (Number(item) - Number(arr[index - 1]) === 1) {
+          return (
+            <Torus
+              radius={stationRadius}
+              color={baseColor}
+              angle={angle}
+              key={item}
+            />
+          );
+        }
+      } else {
+        if (arr.at(-1) == 8) {
+          return (
+            <Torus
+              radius={stationRadius}
+              color={baseColor}
+              angle={angle}
+              key={item}
+            />
+          );
+        }
       }
-    } else {
-      if (arr.at(-1) == 8) {
-        return (
-          <Torus
-            radius={stationRadius}
-            color={baseColor}
-            angle={angle}
-            key={item}
-          />
-        );
-      }
-    }
-    return null;
-  });
+      return null;
+    });
+  }
 
-  const torus_2: ReactNode[] = baseCircle2.map((item, index, arr) => {
-    const itemInCircle = item - 8;
-    let angle = ((itemInCircle - 2) * Math.PI) / 4 - Math.PI / 4;
-    console.log(item + " second angle = " + angle);
-    if (index > 0) {
-      console.log("index > 0");
-      if (item - arr[index - 1] === 1) {
-        console.log("111");
-        return (
-          <Torus
-            radius={2 * stationRadius}
-            color={baseColor}
-            angle={angle}
-            key={item}
-          />
-        );
-      }
-    } else {
-      console.log("index = 0");
-      if (arr.at(-1) == 16) {
-        console.log("2");
-        return (
-          <Torus
-            radius={2 * stationRadius}
-            color={baseColor}
-            angle={angle}
-            key={item}
-          />
-        );
-      }
-    }
-    return null;
-  });
+  let circle_2: ReactNode[] | null = null;
+  let torus_2: ReactNode[] | null = null;
+  if (sections_2) {
+    let baseCircle2 = [...sections_2];
+    baseCircle2.sort((a, b) => a - b);
 
+    circle_2 = baseCircle2.map((item) => {
+      let angle = ((Number(item) - 9) * Math.PI) / 4;
+
+      return (
+        <Section
+          position={[
+            2 * stationRadius * Math.sin(angle),
+            2 * stationRadius * Math.cos(angle),
+            0,
+          ]}
+          rotation={[0, 0, -angle]}
+          size={[0.7]}
+          color={baseColor}
+          sectionNumber={item}
+          textColor={baseColor}
+          key={item}
+        ></Section>
+      );
+    });
+
+    torus_2 = baseCircle2.map((item, index, arr) => {
+      const itemInCircle = item - 8;
+      let angle = ((itemInCircle - 2) * Math.PI) / 4 - Math.PI / 4;
+      if (index > 0) {
+        if (item - arr[index - 1] === 1) {
+          return (
+            <Torus
+              radius={2 * stationRadius}
+              color={baseColor}
+              angle={angle}
+              key={item}
+            />
+          );
+        }
+      } else {
+        if (arr.at(-1) == 16) {
+          return (
+            <Torus
+              radius={2 * stationRadius}
+              color={baseColor}
+              angle={angle}
+              key={item}
+            />
+          );
+        }
+      }
+      return null;
+    });
+  }
   return (
     <div className="centerWindow glass self-center">
       <div className="blackWindow text-center text-white">
@@ -340,9 +346,7 @@ export default function Base() {
         }
       </div>
       {showForm && (
-        <OpenedFormWrapper
-          addFormStyle={{ right: "calc(50% - 100px)", width: "200px" }}
-        >
+        <OpenedFormWrapper>
           <GetNameForm
             value={newBaseName}
             onChange={setNewBaseName}

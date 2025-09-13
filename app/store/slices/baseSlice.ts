@@ -16,9 +16,9 @@ interface MyBaseState {
 const initialState: MyBaseState = {
   baseName: null,
   activeSection: null,
-  circlesCount: 1,
-  sectionCount: 4,
-  sections_1: [1, 2, 5, 6],
+  circlesCount: 0,
+  sectionCount: 0,
+  sections_1: [],
   sections_2: [],
   sections_3: [],
 };
