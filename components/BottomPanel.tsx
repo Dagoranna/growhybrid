@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import { FC, ReactNode } from "react";
 import { Object3D } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
+import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import Paw from "./designelems/Paw";
 
 import type { RootState, AppDispatch } from "../app/store/store";
@@ -77,11 +77,21 @@ function StationControl() {
           Build new section
         </button>
       </div>
-      {showDataWindow &&
-        createPortal(
-          <div className="modalWindow glass">Really?</div>,
-          document.body
-        )}
+      {showDataWindow && (
+        <OpenedFormWrapper
+          formName="Build new section"
+          onClose={() => setShowDataWindow(false)}
+          pawMini={true}
+        >
+          <div style={{ color: "white" }}>Really? Really?</div>
+          <button
+            className="buttonMini"
+            onClick={() => setShowDataWindow(false)}
+          >
+            Yes
+          </button>
+        </OpenedFormWrapper>
+      )}
     </>
   );
 }

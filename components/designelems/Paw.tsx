@@ -24,7 +24,7 @@ export default function Paw({ width }: MyProps) {
     ctx.strokeStyle = mainColor;
     ctx.shadowColor = mainColor;
     ctx.fillStyle = fillColor;
-    ctx.shadowBlur = 15;
+    ctx.shadowBlur = 5;
 
     ctx.save();
     ctx.scale(width / 100, width / 100);
@@ -64,6 +64,8 @@ export default function Paw({ width }: MyProps) {
         bottom: "5px",
         right: "5px",
         borderRadius: "30%",
+        pointerEvents: "none",
+        zIndex: "-1",
       }}
     ></canvas>
   );

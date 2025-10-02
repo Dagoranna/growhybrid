@@ -149,6 +149,51 @@ body {
     0 0.1em 0.1em var(--main-color) inset;
 }
 
+.buttonMini {
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px var(--main-shadow);
+  user-select: none;
+  cursor: pointer;
+
+  outline: none;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  border-radius: 0.2rem;
+  margin: 0.2rem;
+  min-width: 3rem;
+  min-height: 1rem;
+  align-self: center;
+
+  background: linear-gradient(var(--main-color-dark) 50%, var(--main-color));
+  border: 0.1rem solid var(--main-color-dark);
+  box-shadow: 0.1em 0.1em 0.2em var(--main-color-dark);
+}
+
+.buttonMini:hover {
+  background:
+    linear-gradient(
+      -60deg,
+      transparent 0%,
+      transparent 45%,
+      var(--main-color-light) 50%,
+      transparent 55%
+    ),
+    linear-gradient(var(--main-color-dark) 50%, var(--main-color));
+  background-size:
+    300% 100%,
+    100% 100%;
+  background-position:
+    100% 0%,
+    0 0;
+  animation: glint 0.5s linear forwards;
+  box-shadow:
+    0.1em 0.1em 0.2em var(--main-color-dark),
+    0 0.1em 0.1em var(--main-color) inset;
+}
+
 .infoLinkButton {
   width: 100%;
   text-decoration: underline;

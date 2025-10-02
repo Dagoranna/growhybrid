@@ -79,14 +79,6 @@ function RotatingGroup({ children }: { children: ReactNode }) {
   return <group ref={ref}>{children}</group>;
 }
 
-/*
-        style={{
-          width: "100%",
-          backgroundColor: "black",
-          color: "white",
-          border: "2px solid aliceblue",
-        }}
-*/
 function GetNameForm({ value, onChange, onSubmit }: GetNameFormProps) {
   return (
     <form
@@ -346,7 +338,7 @@ export default function Base() {
         }
       </div>
       {showForm && (
-        <OpenedFormWrapper>
+        <OpenedFormWrapper onClose={() => setShowForm(false)} pawMini={true}>
           <GetNameForm
             value={newBaseName}
             onChange={setNewBaseName}
