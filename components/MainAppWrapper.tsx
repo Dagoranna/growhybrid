@@ -31,6 +31,7 @@ export default function MainAppWrapper({ children }: MyProps) {
           dispatch(actions.setLoginState(true));
           dispatch(actions.setUserEmail(baseResponse.email));
           dispatch(actions.setUserName(baseResponse.name));
+          dispatch(actions.setUserID(baseResponse.userID));
         } else {
           console.log("error!");
           console.log(baseResponse.message);

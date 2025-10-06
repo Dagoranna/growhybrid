@@ -1,11 +1,6 @@
 import { makeHash } from "../../../../utils/generalUtils";
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+import { supabase } from "../../../../utils/supabase";
 
 export async function POST(req: Request) {
   const body = await req.json();

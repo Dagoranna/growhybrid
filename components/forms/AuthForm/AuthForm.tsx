@@ -91,6 +91,7 @@ export default function AuthForm() {
           if (baseResponse.loginState === true) {
             dispatch(actions.setUserEmail(email));
             dispatch(actions.setUserName(baseResponse.name));
+            dispatch(actions.setUserID(baseResponse.userID));
           }
           setActionResult(baseResponse.loginState);
         } else {

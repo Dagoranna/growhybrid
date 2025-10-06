@@ -1,11 +1,6 @@
 import { makeHash } from "../../../../utils/generalUtils";
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+import { supabase } from "../../../../utils/supabase";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -60,14 +55,24 @@ async function saveUserToBase(
   password: string,
   token: string
 ) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("advancedauth")
     .insert([
       { email: email, name: name, passwordhash: password, authtoken: token },
-    ]);
+    ])
+    .select("id");
 
-  if (error) {
-    console.error("Error:", error);
+  if (error || !data || data.length === 0) {
+    console.error("Account create error", error);
+    return false;
+  }
+
+  const { error: error_2 } = await supabase
+    .from("property")
+    .insert([{ owner_id: data[0].id, money: 1000 }]);
+
+  if (error_2) {
+    console.error("Property creation error ", error_2);
     return false;
   } else {
     return true;

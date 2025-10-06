@@ -1,12 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { cookies, headers } from "next/headers";
+import { supabase } from "../../../../utils/supabase";
 //export const dynamic = "force-dynamic";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
 
 export async function POST() {
   const cookieStore = await cookies();
@@ -34,6 +29,7 @@ export async function POST() {
           tokenState: 1,
           email: baseData[0].email,
           name: baseData[0].name,
+          userID: baseData[0].id,
         },
         { status: 200 }
       );
@@ -49,7 +45,7 @@ export async function POST() {
 async function getEmailForToken(token: string) {
   const { data, error } = await supabase
     .from("advancedauth")
-    .select("email, name")
+    .select("email, name, id")
     .eq("authtoken", token);
 
   if (error) {

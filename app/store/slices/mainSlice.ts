@@ -7,6 +7,7 @@ interface MyMainState {
   loginState: boolean;
   userEmail: string;
   userName: string;
+  userID: number | null;
   screen: ScreenType;
 }
 
@@ -14,6 +15,7 @@ const initialState: MyMainState = {
   loginState: false,
   userEmail: "",
   userName: "",
+  userID: null,
   screen: "home",
 };
 
@@ -30,6 +32,9 @@ const mainSlice = createSlice({
     setUserName: (state, action: PayloadAction<string>) => {
       state.userName = action.payload;
     },
+    setUserID: (state, action: PayloadAction<number>) => {
+      state.userID = action.payload;
+    },
     setScreen: (state, action: PayloadAction<ScreenType>) => {
       state.screen = action.payload;
     },
@@ -39,7 +44,12 @@ const mainSlice = createSlice({
   },
 });
 
-export const { setLoginState, setUserEmail, setUserName, setScreen } =
-  mainSlice.actions;
+export const {
+  setLoginState,
+  setUserEmail,
+  setUserName,
+  setUserID,
+  setScreen,
+} = mainSlice.actions;
 
 export default mainSlice.reducer;

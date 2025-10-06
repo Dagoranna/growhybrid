@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
+import * as actionsWarehouse from "../app/store/slices/warehouseSlice";
 import { FC, ReactNode } from "react";
 import { Object3D } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -10,6 +11,8 @@ import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import Paw from "./designelems/Paw";
 
 import type { RootState, AppDispatch } from "../app/store/store";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 function SelectedSectionInfo() {
   const activeSection = useSelector(
@@ -96,6 +99,41 @@ function StationControl() {
   );
 }
 
+function Warehouse() {
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = useSelector((state: RootState) => state.main.userID);
+  const money = useSelector((state: RootState) => state.warehouse.money);
+
+  async function getMoney() {
+    const response = await fetch(`${apiUrl}/api/base/getMoney`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ owner_id: userId }),
+    });
+
+    const baseResponse = await response.json();
+    dispatch(actionsWarehouse.setMoney(baseResponse.message));
+  }
+
+  useEffect(() => {
+    if (userId) {
+      const fetchData = async () => {
+        await getMoney();
+      };
+      fetchData();
+    }
+  }, [dispatch, userId]);
+
+  return (
+    <div className="infoSection">
+      <p className="pInSection infoTitle">Warehouse</p>
+      <p className="pInSection">
+        <span className="pInSectionName">Credits:</span> {money}
+      </p>
+    </div>
+  );
+}
+
 export default function BottomPanel() {
   const dispatch: AppDispatch = useDispatch();
 
@@ -104,6 +142,7 @@ export default function BottomPanel() {
       <StationInfo />
       <SelectedSectionInfo />
       <StationControl />
+      <Warehouse />
       <Paw width={50} />
     </div>
   );

@@ -1,12 +1,7 @@
 import { makeHash } from "../../../../utils/generalUtils";
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { cookies, headers } from "next/headers";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+import { supabase } from "../../../../utils/supabase";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -44,13 +39,15 @@ export async function POST(req: Request) {
 
         if (setTokenAttempt) {
           const expirationDate = new Date();
-          expirationDate.setFullYear(expirationDate.getFullYear() + 5);
+          expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
           const name = await getName(email);
+          const userID = await getUserID(email);
           const response = NextResponse.json(
             {
               message: "login successful, token saved",
               name: name,
+              userID: userID,
               loginState: true,
             },
             { status: 200 }
@@ -74,9 +71,15 @@ export async function POST(req: Request) {
         }
       } else {
         const name = await getName(email);
+        const userID = await getUserID(email);
 
         return NextResponse.json(
-          { message: "session login successful", name: name, loginState: true },
+          {
+            message: "session login successful",
+            name: name,
+            userID: userID,
+            loginState: true,
+          },
           { status: 200 }
         );
       }
@@ -136,5 +139,19 @@ async function getName(email: string) {
     return null;
   } else {
     return data[0].name;
+  }
+}
+
+async function getUserID(email: string) {
+  const { data, error } = await supabase
+    .from("advancedauth")
+    .select("id")
+    .eq("email", email);
+
+  if (error) {
+    console.error("Error:", error);
+    return null;
+  } else {
+    return data[0].id;
   }
 }
