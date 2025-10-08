@@ -105,6 +105,26 @@ body {
   font-weight: bold;
 }
 
+.formReactionSuccess {
+  color: green !important;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    var(--main-color-light),
+    transparent 100%
+  );
+  border-radius: 5px;
+}
+
+.formReactionFail {
+  color: red !important;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    var(--main-color-light),
+    transparent 100%
+  );
+  border-radius: 5px;
+}
+
 .mainButton {
   color: #fff;
   text-align: center;
@@ -158,7 +178,7 @@ body {
   user-select: none;
   cursor: pointer;
 
-  outline: none;
+  outline: 1px solid aliceblue;
   padding-left: 0.4rem;
   padding-right: 0.4rem;
   border-radius: 0.2rem;
@@ -192,6 +212,10 @@ body {
   box-shadow:
     0.1em 0.1em 0.2em var(--main-color-dark),
     0 0.1em 0.1em var(--main-color) inset;
+}
+
+.buttonMini:active {
+  box-shadow: none;
 }
 
 .infoLinkButton {

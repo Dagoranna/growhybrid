@@ -29,7 +29,6 @@ export async function POST(req: Request) {
   }
 
   const baseData = await getBaseData(userId);
-  console.log(baseData);
   if (baseData === false) {
     return NextResponse.json(
       { message: "Database error", baseState: -1 },

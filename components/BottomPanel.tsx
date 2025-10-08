@@ -8,11 +8,11 @@ import { FC, ReactNode } from "react";
 import { Object3D } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import OpenedFormWrapper from "./forms/OpenedFormWrapper";
+import PurchaseForm from "./forms/PurchaseForm";
 import Paw from "./designelems/Paw";
+import { getPrice, getMoney } from "../utils/generalUtils";
 
 import type { RootState, AppDispatch } from "../app/store/store";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 function SelectedSectionInfo() {
   const activeSection = useSelector(
@@ -72,6 +72,8 @@ function StationControl() {
     setShowDataWindow(true);
   }
 
+  const money = useSelector((state: RootState) => state.warehouse.money);
+
   return (
     <>
       <div className="infoSection">
@@ -81,19 +83,10 @@ function StationControl() {
         </button>
       </div>
       {showDataWindow && (
-        <OpenedFormWrapper
-          formName="Build new section"
+        <PurchaseForm
+          itemName="Section"
           onClose={() => setShowDataWindow(false)}
-          pawMini={true}
-        >
-          <div style={{ color: "white" }}>Really? Really?</div>
-          <button
-            className="buttonMini"
-            onClick={() => setShowDataWindow(false)}
-          >
-            Yes
-          </button>
-        </OpenedFormWrapper>
+        />
       )}
     </>
   );
@@ -104,24 +97,15 @@ function Warehouse() {
   const userId = useSelector((state: RootState) => state.main.userID);
   const money = useSelector((state: RootState) => state.warehouse.money);
 
-  async function getMoney() {
-    const response = await fetch(`${apiUrl}/api/base/getMoney`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ owner_id: userId }),
-    });
-
-    const baseResponse = await response.json();
-    dispatch(actionsWarehouse.setMoney(baseResponse.message));
-  }
-
   useEffect(() => {
-    if (userId) {
-      const fetchData = async () => {
-        await getMoney();
-      };
-      fetchData();
-    }
+    if (!userId) return;
+
+    const fetchMoney = async () => {
+      const value = await getMoney(userId);
+      dispatch(actionsWarehouse.setMoney(value));
+    };
+
+    fetchMoney();
   }, [dispatch, userId]);
 
   return (
