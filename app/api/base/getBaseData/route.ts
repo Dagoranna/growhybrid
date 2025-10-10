@@ -3,11 +3,7 @@ import { supabase } from "../../../../utils/supabase";
 
 interface baseData {
   station_name: string;
-  circles_count: number;
-  sections_count: number;
-  sections_1: number[];
-  sections_2: number[];
-  sections_3: number[];
+  sections: number[];
 }
 
 export async function POST(req: Request) {
@@ -69,9 +65,7 @@ async function getUserId(email: string): Promise<number | null | false> {
 async function getBaseData(userId: number): Promise<baseData | boolean | null> {
   const { data, error } = await supabase
     .from("stations")
-    .select(
-      "station_name,circles_count,sections_count,sections_1,sections_2,sections_3"
-    )
+    .select("station_name,sections")
     .eq("owner_id", userId);
 
   if (error) {

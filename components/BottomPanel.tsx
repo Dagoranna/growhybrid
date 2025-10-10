@@ -35,15 +35,9 @@ function SelectedSectionInfo() {
 }
 
 function StationInfo() {
-  const circlesCount = useSelector(
-    (state: RootState) => state.base.circlesCount
-  );
-  const sectionCount = useSelector(
-    (state: RootState) => state.base.sectionCount
-  );
   const baseName = useSelector((state: RootState) => state.base.baseName);
-  const sections_1 = useSelector((state: RootState) => state.base.sections_1);
-  const sections_2 = useSelector((state: RootState) => state.base.sections_2);
+  const sections = useSelector((state: RootState) => state.base.sections);
+
   return (
     <div className="infoSection">
       <p className="pInSection infoTitle">Base info</p>
@@ -51,15 +45,16 @@ function StationInfo() {
         <span className="pInSectionName">Base name:</span> {baseName}
       </p>
       <p className="pInSection">
-        <span className="pInSectionName">Circles:</span> {circlesCount}
+        <span className="pInSectionName">Circles:</span>{" "}
+        {!sections || sections.length < 1
+          ? 0
+          : !sections || sections.length < 9
+            ? 1
+            : 2}
       </p>
       <p className="pInSection">
-        <span className="pInSectionName">Sections built:</span> {sectionCount}
-      </p>
-      <p className="pInSection">
-        <span className="pInSectionName">Sections working:</span>{" "}
-        {sections_1 ? sections_1.map((item) => ` ${item} `) : ""}
-        {sections_2 ? sections_2.map((item) => ` ${item} `) : ""}
+        <span className="pInSectionName">Sections built:</span>{" "}
+        {sections ? sections.map((item) => ` ${item} `) : ""}
       </p>
     </div>
   );
@@ -85,6 +80,7 @@ function StationControl() {
       {showDataWindow && (
         <PurchaseForm
           itemName="Section"
+          itemType="construction"
           onClose={() => setShowDataWindow(false)}
         />
       )}

@@ -110,9 +110,7 @@ export default function Base() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const baseColor = "aliceblue";
   const baseName = useSelector((state: RootState) => state.base.baseName);
-  const sections_1 = useSelector((state: RootState) => state.base.sections_1);
-  const sections_2 = useSelector((state: RootState) => state.base.sections_2);
-  const sections_3 = useSelector((state: RootState) => state.base.sections_3);
+  const sections = useSelector((state: RootState) => state.base.sections);
   const userEmail = useSelector((state: RootState) => state.main.userEmail);
 
   const [showForm, setShowForm] = useState(false);
@@ -168,15 +166,7 @@ export default function Base() {
       if (response.ok) {
         if (baseResponse.baseState === 1) {
           dispatch(baseActions.setBaseName(baseResponse.message.station_name));
-          dispatch(
-            baseActions.setCirclesCount(baseResponse.message.circles_count)
-          );
-          dispatch(
-            baseActions.setSectionCount(baseResponse.message.sections_count)
-          );
-          dispatch(baseActions.setSections_1(baseResponse.message.sections_1));
-          dispatch(baseActions.setSections_2(baseResponse.message.sections_2));
-          dispatch(baseActions.setSections_3(baseResponse.message.sections_3));
+          dispatch(baseActions.setSections(baseResponse.message.sections));
         } else {
           setShowForm(true);
         }
@@ -191,8 +181,8 @@ export default function Base() {
 
   let circle_1: ReactNode[] | null = null;
   let torus_1: ReactNode[] | null = null;
-  if (sections_1) {
-    let baseCircle1 = [...sections_1];
+  if (sections) {
+    let baseCircle1 = sections.slice(0, 8);
     baseCircle1.sort((a, b) => a - b);
 
     circle_1 = baseCircle1.map((item) => {
@@ -246,8 +236,8 @@ export default function Base() {
 
   let circle_2: ReactNode[] | null = null;
   let torus_2: ReactNode[] | null = null;
-  if (sections_2) {
-    let baseCircle2 = [...sections_2];
+  if (sections !== null && sections.length > 8) {
+    let baseCircle2 = sections.slice(8, 16);
     baseCircle2.sort((a, b) => a - b);
 
     circle_2 = baseCircle2.map((item) => {

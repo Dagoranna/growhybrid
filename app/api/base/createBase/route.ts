@@ -3,8 +3,6 @@ import { supabase } from "../../../../utils/supabase";
 
 /*interface baseData {
   station_name: string;
-  circles_count: number;
-  sections_count: number;
   sections_1: number[];
   sections_2: number[];
   sections_3: number[];
@@ -64,7 +62,6 @@ async function createBase(userId: number, baseName: string): Promise<boolean> {
   const { error } = await supabase.from("stations").insert([
     {
       owner_id: userId,
-      sections_count: 0,
       station_name: baseName,
     },
   ]);

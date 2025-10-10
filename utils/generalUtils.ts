@@ -55,15 +55,32 @@ export async function getMoney(userId: number) {
   return baseResponse.message;
 }
 
-export async function makePurchase(
+export async function buyItem(
   userId: number | null,
   itemName: string,
-  count: number
+  count: number,
+  payment: number
 ) {
-  const response = await fetch(`${apiUrl}/api/base/makePurchase`, {
+  const response = await fetch(`${apiUrl}/api/base/buyItem`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userId, itemName, count }),
+    body: JSON.stringify({ userId, itemName, count, payment }),
+  });
+
+  const baseResponse = await response.json();
+  return baseResponse;
+}
+
+export async function buyConstruction(
+  userId: number | null,
+  itemName: string,
+  count: number,
+  payment: number
+) {
+  const response = await fetch(`${apiUrl}/api/base/buyConstruction`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, itemName, count, payment }),
   });
 
   const baseResponse = await response.json();

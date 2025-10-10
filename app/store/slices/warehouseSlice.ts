@@ -1,13 +1,23 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { logout } from "../actions";
 
+export interface plantItems {
+  number: number;
+  cost: number;
+  [key: string]: unknown;
+}
+
 interface MyWarehouseState {
   money: number;
+  seeds: Record<string, plantItems>;
+  crops: Record<string, plantItems>;
   loading: boolean;
 }
 
 const initialState: MyWarehouseState = {
   money: 0,
+  seeds: {},
+  crops: {},
   loading: false,
 };
 

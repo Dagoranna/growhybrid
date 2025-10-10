@@ -3,12 +3,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import OpenedFormWrapper from "./OpenedFormWrapper";
-import { getPrice, makePurchase } from "../../utils/generalUtils";
+import {
+  getPrice,
+  getMoney,
+  buyConstruction,
+  buyItem,
+} from "../../utils/generalUtils";
 import type { RootState, AppDispatch } from "../../app/store/store";
 import { useSelector, useDispatch } from "react-redux";
+import * as baseActions from "../../app/store/slices/baseSlice";
+import * as warehouseActions from "../../app/store/slices/warehouseSlice";
+
+type ItemType = "seed" | "crop" | "construction";
 
 type MyProps = {
   itemName: string;
+  itemType: ItemType;
   itemCount?: number;
   addFormStyle?: Record<string, string>;
   onClose?: () => void;
@@ -16,17 +26,22 @@ type MyProps = {
 
 type purchaseProps = {
   userId: number | null;
+  itemType: ItemType;
   itemName: string;
   count: number;
 };
 
 export default function PurchaseForm({
   itemName,
+  itemType,
   itemCount = 1,
   addFormStyle = {},
   onClose,
 }: MyProps) {
+  const dispatch: AppDispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.main.userID);
+  const money = useSelector((state: RootState) => state.warehouse.money);
+  const sections = useSelector((state: RootState) => state.base.sections);
   const [count, setCount] = useState(itemCount);
   const [price, setPrice] = useState(0);
   const [payment, setPayment] = useState(0);
@@ -34,15 +49,40 @@ export default function PurchaseForm({
   const [resultMessage, setResultMessage] = useState("");
   const [resultState, setResultState] = useState(false);
 
-  async function purchase({ userId, itemName, count }: purchaseProps) {
+  async function purchase({
+    userId,
+    itemName,
+    itemType,
+    count,
+  }: purchaseProps) {
+    if (money < payment) {
+      setResultMessage("not enough money");
+      setResultState(false);
+      return;
+    }
+
+    if (itemName == "Section") {
+      const sectionsCount = sections ? sections.length : 0;
+      if (sectionsCount + count > 16) {
+        setResultMessage("you can't have more than 16 sections");
+        setResultState(false);
+        return;
+      }
+    }
+
     try {
       setLoading(true);
-      const purchase = await makePurchase(userId, itemName, count);
-      //purchase.message, purchase.success
+      let purchase;
+      itemType === "construction"
+        ? (purchase = await buyConstruction(userId, itemName, count, payment))
+        : (purchase = await buyItem(userId, itemName, count, payment));
+
       setResultMessage(purchase.message);
       setResultState(purchase.success);
+      dispatch(baseActions.setSections(purchase.newArray));
+      dispatch(warehouseActions.changeMoney(-payment));
+      //setTimeout(function, 3000);
     } catch {
-      console.log("false!");
       setResultMessage("fail to purchase");
       setResultState(false);
     } finally {
@@ -96,7 +136,9 @@ export default function PurchaseForm({
 
         <button
           className={`buttonMini m-1 ${loading ? "invisible" : "visible"}`}
-          onClick={async () => await purchase({ userId, itemName, count })}
+          onClick={async () =>
+            await purchase({ userId, itemName, itemType, count })
+          }
         >
           Buy
         </button>
