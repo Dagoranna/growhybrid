@@ -116,9 +116,6 @@ export default function Base() {
   const [showForm, setShowForm] = useState(false);
   const [newBaseName, setNewBaseName] = useState("");
 
-  const [showcentralFormFields, setCentralFormFields] =
-    useState<ReactNode>(null);
-
   async function createBase(name: string) {
     if (name.length === 0) return;
     dispatch(baseActions.setBaseName(name));

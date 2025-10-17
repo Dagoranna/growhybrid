@@ -8,6 +8,7 @@ import Orbit from "./Orbit";
 import Base from "./Base";
 import Home from "./Home";
 import BottomPanel from "./BottomPanel";
+import Market from "./Market";
 
 export default function MainBlock() {
   const screen = useSelector((state: RootState) => state.main.screen);
@@ -22,6 +23,7 @@ export default function MainBlock() {
           <BottomPanel />
         </>
       )}
+      {screen === "market" && <Market />}
     </div>
   );
 }

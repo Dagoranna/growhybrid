@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 async function getPrice(item_name: string): Promise<number | null | false> {
   const { data, error } = await supabase
     .from("library")
-    .select("item_price")
+    .select("price")
     .eq("item_name", item_name);
 
   if (error) {
@@ -34,7 +34,7 @@ async function getPrice(item_name: string): Promise<number | null | false> {
   }
 
   if (data && data.length > 0) {
-    return data[0].item_price;
+    return data[0].price;
   }
 
   return null;

@@ -46,7 +46,7 @@ export default function Orbit() {
 
   return (
     <div className="centerWindow glass self-center">
-      <div className="blackWindiw text-center text-white">
+      <div className="blackWindow text-center text-white">
         <Canvas>
           <directionalLight position={[0, 0, 2]} intensity={0.5} />
           <ambientLight intensity={0.5} />

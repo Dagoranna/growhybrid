@@ -81,7 +81,17 @@ export default function PurchaseForm({
       setResultState(purchase.success);
       dispatch(baseActions.setSections(purchase.newArray));
       dispatch(warehouseActions.changeMoney(-payment));
-      //setTimeout(function, 3000);
+
+      //name: string; count: number; descr: PlantItem
+      if (itemType !== "construction") {
+        dispatch(
+          warehouseActions.addSeed({
+            name: itemName,
+            count: count,
+            descr: purchase.item,
+          })
+        );
+      }
     } catch {
       setResultMessage("fail to purchase");
       setResultState(false);

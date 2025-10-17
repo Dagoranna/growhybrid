@@ -1,4 +1,4 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type purchaseProps = {
   userId: number | null;
@@ -81,6 +81,16 @@ export async function buyConstruction(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, itemName, count, payment }),
+  });
+
+  const baseResponse = await response.json();
+  return baseResponse;
+}
+
+export async function getSeedsFromLibrary() {
+  const response = await fetch(`${apiUrl}/api/market/getSeedsFromLibrary`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
   });
 
   const baseResponse = await response.json();
