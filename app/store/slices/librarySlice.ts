@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { logout } from "../actions";
 
 type ItemType = "construction" | "plant";
 type ItemCategory = "flower" | "herb";

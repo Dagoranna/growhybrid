@@ -4,13 +4,19 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../app/store/slices/mainSlice";
 import * as actionsWarehouse from "../app/store/slices/warehouseSlice";
+import * as actionsLibrary from "../app/store/slices/librarySlice";
 import { FC, ReactNode } from "react";
 import { Object3D } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import PurchaseForm from "./forms/PurchaseForm";
 import Paw from "./designelems/Paw";
-import { getPrice, getMoney, getWarehouse } from "../utils/generalUtils";
+import {
+  getPrice,
+  getMoney,
+  getWarehouse,
+  getSeedInfo,
+} from "../utils/generalUtils";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
@@ -94,28 +100,33 @@ function Warehouse() {
   const money = useSelector((state: RootState) => state.warehouse.money);
   const seeds = useSelector((state: RootState) => state.warehouse.seeds);
   const crops = useSelector((state: RootState) => state.warehouse.crops);
+  const library = useSelector((state: RootState) => state.library.items);
 
   useEffect(() => {
     if (!userId) return;
 
-    /*const fetchMoney = async () => {
-      const value = await getMoney(userId);
-      dispatch(actionsWarehouse.setMoney(value));
-    };*/
-    /*const fetchSeeds = async () => {
-      const value = await getSeeds(userId);
-      dispatch(actionsWarehouse.setSeeds(value));
-    };*/
     const fetchWarehouse = async () => {
       const value = await getWarehouse(userId);
       dispatch(actionsWarehouse.setWarehouse(value));
     };
 
     fetchWarehouse();
-    //fetchMoney();
-    //fetchSeeds();
   }, [dispatch, userId]);
 
+  useEffect(() => {
+    const fetchSeed = async () => {
+      for (const seed of Object.keys(seeds)) {
+        if (!library[seed]) {
+          const newSeed = await getSeedInfo(seed);
+          dispatch(actionsLibrary.setItem({ name: seed, item: newSeed }));
+        }
+      }
+    };
+    fetchSeed();
+  }, [seeds, dispatch]);
+
+  const seedsInfo = JSON.stringify(seeds).slice(1, -1);
+  const lib = useSelector((state: RootState) => state.library.items);
   return (
     <div className="infoSection">
       <p className="pInSection infoTitle">Warehouse</p>
@@ -123,11 +134,12 @@ function Warehouse() {
         <span className="pInSectionName">Credits:</span> {money}
       </p>
       <p className="pInSection">
-        <span className="pInSectionName">Seeds:</span> {Object.keys(seeds)}
+        <span className="pInSectionName">Seeds:</span> {seedsInfo}
       </p>
       <p className="pInSection">
         <span className="pInSectionName">Crops:</span> {Object.keys(crops)}
       </p>
+      <p className="pInSection">{JSON.stringify(lib)}</p>
     </div>
   );
 }

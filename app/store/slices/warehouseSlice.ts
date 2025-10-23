@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { logout } from "../actions";
-import type { PlantItem } from "./librarySlice";
 
 export interface MyWarehouseState {
   money: number;
-  seeds: Record<string, PlantItem>;
-  crops: Record<string, PlantItem>;
+  seeds: Record<string, number>;
+  crops: Record<string, number>;
   loading?: boolean;
 }
 
@@ -29,7 +28,34 @@ const warehouseSlice = createSlice({
     changeMoney: (state, action: PayloadAction<number>) => {
       state.money = state.money + action.payload;
     },
+
     addSeed: (
+      state,
+      action: PayloadAction<{ name: string; count: number }>
+    ) => {
+      const { name, count } = action.payload;
+      state.seeds[name] = (state.seeds[name] || 0) + count;
+    },
+    subtractSeed: (
+      state,
+      action: PayloadAction<{ name: string; count: number }>
+    ) => {
+      const { name, count } = action.payload;
+      state.seeds[name] = (state.seeds[name] || 0) - count;
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => initialState);
+  },
+});
+
+export const { setWarehouse, setMoney, changeMoney, addSeed, subtractSeed } =
+  warehouseSlice.actions;
+
+export default warehouseSlice.reducer;
+
+/*    addSeed: (
       state,
       action: PayloadAction<{ name: string; count: number; descr: PlantItem }>
     ) => {
@@ -71,14 +97,4 @@ const warehouseSlice = createSlice({
       if (existingSeed.item_count === 0) {
         delete state.seeds[seedName];
       }
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(logout, () => initialState);
-  },
-});
-
-export const { setWarehouse, setMoney, changeMoney, addSeed, subtractSeed } =
-  warehouseSlice.actions;
-
-export default warehouseSlice.reducer;
+    },*/

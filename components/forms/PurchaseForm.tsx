@@ -14,6 +14,7 @@ import type { RootState, AppDispatch } from "../../app/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import * as baseActions from "../../app/store/slices/baseSlice";
 import * as warehouseActions from "../../app/store/slices/warehouseSlice";
+import * as libraryActions from "../../app/store/slices/librarySlice";
 
 type ItemType = "seed" | "crop" | "construction";
 
@@ -84,12 +85,17 @@ export default function PurchaseForm({
       dispatch(warehouseActions.changeMoney(-payment));
 
       //name: string; count: number; descr: PlantItem
-      if (itemType === "seed") {
+      if (itemType === "seed" && purchase.success) {
         dispatch(
           warehouseActions.addSeed({
             name: itemName,
             count: count,
-            descr: purchase.item,
+          })
+        );
+        dispatch(
+          libraryActions.setItem({
+            name: itemName,
+            item: purchase.item,
           })
         );
       }

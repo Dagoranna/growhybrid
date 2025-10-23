@@ -3,6 +3,7 @@ import mainReducer from "./slices/mainSlice";
 import baseReducer from "./slices/baseSlice";
 import warehouseReducer from "./slices/warehouseSlice";
 import marketReducer from "./slices/marketSlice";
+import libraryReducer from "./slices/librarySlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     base: baseReducer,
     warehouse: warehouseReducer,
     market: marketReducer,
+    library: libraryReducer,
   },
 });
 

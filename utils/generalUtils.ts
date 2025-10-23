@@ -66,6 +66,17 @@ export async function getMoney(userId: number) {
   return baseResponse.message;
 }
 
+export async function getSeedInfo(name: string) {
+  const response = await fetch(`${apiUrl}/api/base/getSeedInfo`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ item_name: name }),
+  });
+
+  const baseResponse = await response.json();
+  return baseResponse.message;
+}
+
 export async function buyItem(
   userId: number | null,
   itemName: string,
