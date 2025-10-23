@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../app/store/slices/mainSlice";
 import * as marketActions from "../app/store/slices/marketSlice";
 import { FC, ReactNode } from "react";
 import { getSeedsFromLibrary } from "../utils/generalUtils";
 
 import type { RootState, AppDispatch } from "../app/store/store";
-import type { PlantItem } from "../app/store/slices/warehouseSlice";
+import type { PlantItem } from "../app/store/slices/librarySlice";
+import PurchaseForm from "./forms/PurchaseForm";
+import BottomPanel from "./BottomPanel";
 
 function MarketTopPanel() {
   return <div className="w-full">Top Market Panel</div>;
@@ -19,12 +20,29 @@ interface MarketPositionProps {
 }
 
 const MarketPosition: React.FC<MarketPositionProps> = ({ item }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  /*
+  type MyProps = {
+  itemName: string;
+  itemType: ItemType;
+  itemCount?: number;
+  addFormStyle?: Record<string, string>;
+  onClose?: () => void;
+};
+  */
   return (
     <>
-      <div>{item.item_name}</div>
+      <div onClick={() => setIsOpen(true)}>{item.item_name}</div>
       <div>{item.category}</div>
       <div>{item.growing_time}</div>
       <div>{item.seed_price}</div>
+      {isOpen && (
+        <PurchaseForm
+          itemName={item.item_name}
+          itemType="seed"
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </>
   );
 };
@@ -49,11 +67,6 @@ function MarketMainBlock() {
     fetchSeeds();
   }, [dispatch]);
 
-  // FOR CHECK
-  /*useEffect(() => {
-    console.log("seeds");
-    console.log(seeds);
-  }, [seeds]);*/
   return (
     <div className="grid grid-cols-4 gap-x-4 gap-y-2 p-4 text-sm">
       <div className="pInSectionName border-b pb-1">Name</div>
@@ -71,10 +84,12 @@ function MarketMainBlock() {
 export default function Market() {
   const dispatch: AppDispatch = useDispatch();
   return (
-    <div className="modalWindow infoSection min-w-4/5 w-4/5 h-4/5 overflow-y-auto">
-      <MarketTopPanel />
-      <MarketMainBlock />
-    </div>
+    <>
+      <div className="modalWindow infoSection min-w-4/5 w-4/5 h-4/5 overflow-y-auto">
+        <MarketTopPanel />
+        <MarketMainBlock />
+      </div>
+    </>
   );
 }
 

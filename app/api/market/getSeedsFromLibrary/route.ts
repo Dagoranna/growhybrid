@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../../utils/supabase";
-import type { PlantItem } from "../../../store/slices/warehouseSlice";
+import type { PlantItem } from "../../../store/slices/librarySlice";
 
 export async function POST(req: Request) {
   const seeds = await getSeeds();

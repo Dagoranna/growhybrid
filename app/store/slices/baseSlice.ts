@@ -4,12 +4,14 @@ import { logout } from "../actions";
 type SectionJSON = Record<string, number[]>;
 
 interface MyBaseState {
+  loading: boolean;
   baseName: string | null;
   activeSection: number | null;
   sections: number[] | null;
 }
 
 const initialState: MyBaseState = {
+  loading: false,
   baseName: null,
   activeSection: null,
   sections: null,
@@ -28,12 +30,16 @@ const baseSlice = createSlice({
     setSections: (state, action: PayloadAction<number[]>) => {
       state.sections = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(logout, () => initialState);
   },
 });
 
-export const { setBaseName, setActiveSection, setSections } = baseSlice.actions;
+export const { setBaseName, setActiveSection, setSections, setLoading } =
+  baseSlice.actions;
 
 export default baseSlice.reducer;

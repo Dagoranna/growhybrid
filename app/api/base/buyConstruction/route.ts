@@ -28,18 +28,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-/*
-
-      console.log("Добавлены секции:", data.new_sections); // например [4,5,6]
-    console.log("Обновлённый массив:", data.sections);
-
-    
-  Добавлены секции: [ 11 ]
-Обновлённый массив: [
-   1, 2, 3, 4,  5,
-   6, 7, 8, 9, 10,
-  11
-]
-
-  */

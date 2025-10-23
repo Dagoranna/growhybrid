@@ -23,7 +23,12 @@ export default function MainBlock() {
           <BottomPanel />
         </>
       )}
-      {screen === "market" && <Market />}
+      {screen === "market" && (
+        <>
+          <Market />
+          <BottomPanel />
+        </>
+      )}
     </div>
   );
 }

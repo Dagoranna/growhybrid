@@ -73,6 +73,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  margin-top: auto;
 }
 
 .infoSection {
@@ -106,22 +107,14 @@ body {
 }
 
 .formReactionSuccess {
-  color: green !important;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    var(--main-color-light),
-    transparent 100%
-  );
+  color: lawngreen !important;
+  background: radial-gradient(ellipse at 50% 50%, black, transparent 100%);
   border-radius: 5px;
 }
 
 .formReactionFail {
   color: red !important;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    var(--main-color-light),
-    transparent 100%
-  );
+  background: radial-gradient(ellipse at 50% 50%, black, transparent 100%);
   border-radius: 5px;
 }
 

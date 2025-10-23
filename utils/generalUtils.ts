@@ -44,6 +44,17 @@ export async function getPrice(item_name: string) {
   }
 }
 
+export async function getWarehouse(userId: number) {
+  const response = await fetch(`${apiUrl}/api/base/getWarehouse`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ owner_id: userId }),
+  });
+
+  const baseResponse = await response.json();
+  return baseResponse.message;
+}
+
 export async function getMoney(userId: number) {
   const response = await fetch(`${apiUrl}/api/base/getMoney`, {
     method: "POST",
@@ -61,7 +72,7 @@ export async function buyItem(
   count: number,
   payment: number
 ) {
-  const response = await fetch(`${apiUrl}/api/base/buyItem`, {
+  const response = await fetch(`${apiUrl}/api/market/buyItem`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, itemName, count, payment }),

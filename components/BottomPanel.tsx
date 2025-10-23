@@ -10,7 +10,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import PurchaseForm from "./forms/PurchaseForm";
 import Paw from "./designelems/Paw";
-import { getPrice, getMoney } from "../utils/generalUtils";
+import { getPrice, getMoney, getWarehouse } from "../utils/generalUtils";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
@@ -92,16 +92,28 @@ function Warehouse() {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.main.userID);
   const money = useSelector((state: RootState) => state.warehouse.money);
+  const seeds = useSelector((state: RootState) => state.warehouse.seeds);
+  const crops = useSelector((state: RootState) => state.warehouse.crops);
 
   useEffect(() => {
     if (!userId) return;
 
-    const fetchMoney = async () => {
+    /*const fetchMoney = async () => {
       const value = await getMoney(userId);
       dispatch(actionsWarehouse.setMoney(value));
+    };*/
+    /*const fetchSeeds = async () => {
+      const value = await getSeeds(userId);
+      dispatch(actionsWarehouse.setSeeds(value));
+    };*/
+    const fetchWarehouse = async () => {
+      const value = await getWarehouse(userId);
+      dispatch(actionsWarehouse.setWarehouse(value));
     };
 
-    fetchMoney();
+    fetchWarehouse();
+    //fetchMoney();
+    //fetchSeeds();
   }, [dispatch, userId]);
 
   return (
@@ -110,18 +122,31 @@ function Warehouse() {
       <p className="pInSection">
         <span className="pInSectionName">Credits:</span> {money}
       </p>
+      <p className="pInSection">
+        <span className="pInSectionName">Seeds:</span> {Object.keys(seeds)}
+      </p>
+      <p className="pInSection">
+        <span className="pInSectionName">Crops:</span> {Object.keys(crops)}
+      </p>
     </div>
   );
 }
 
 export default function BottomPanel() {
   const dispatch: AppDispatch = useDispatch();
+  const screen = useSelector((state: RootState) => state.main.screen);
 
   return (
     <div className="bottomPanel glass self-center">
-      <StationInfo />
-      <SelectedSectionInfo />
-      <StationControl />
+      {screen === "base" && (
+        <>
+          {" "}
+          <StationInfo />
+          <SelectedSectionInfo />
+          <StationControl />
+        </>
+      )}
+
       <Warehouse />
       <Paw width={50} />
     </div>

@@ -1,31 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { logout } from "../actions";
+import type { PlantItem } from "./librarySlice";
 
-type ItemType = "construction" | "plant";
-type ItemCategory = "flower" | "herb";
-
-export interface PlantItem {
-  item_name: string;
-  item_type: ItemType;
-
-  id?: number;
-  created_at: Date;
-  item_count?: number;
-  price?: number;
-  seed_price?: number;
-  growing_time?: number;
-  category?: ItemCategory;
-  properties?: Record<string, string>;
-  descr?: string;
-  color?: string;
-  size?: number;
-}
-
-interface MyWarehouseState {
+export interface MyWarehouseState {
   money: number;
   seeds: Record<string, PlantItem>;
   crops: Record<string, PlantItem>;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const initialState: MyWarehouseState = {
@@ -39,6 +20,9 @@ const warehouseSlice = createSlice({
   name: "warehouseState",
   initialState,
   reducers: {
+    setWarehouse: (state, action: PayloadAction<MyWarehouseState>) => {
+      return action.payload;
+    },
     setMoney: (state, action: PayloadAction<number>) => {
       state.money = action.payload;
     },
@@ -94,7 +78,7 @@ const warehouseSlice = createSlice({
   },
 });
 
-export const { setMoney, changeMoney, addSeed, subtractSeed } =
+export const { setWarehouse, setMoney, changeMoney, addSeed, subtractSeed } =
   warehouseSlice.actions;
 
 export default warehouseSlice.reducer;

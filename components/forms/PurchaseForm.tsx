@@ -6,8 +6,9 @@ import OpenedFormWrapper from "./OpenedFormWrapper";
 import {
   getPrice,
   getMoney,
-  buyConstruction,
   buyItem,
+  buyConstruction,
+  getSeedsFromLibrary,
 } from "../../utils/generalUtils";
 import type { RootState, AppDispatch } from "../../app/store/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -83,7 +84,7 @@ export default function PurchaseForm({
       dispatch(warehouseActions.changeMoney(-payment));
 
       //name: string; count: number; descr: PlantItem
-      if (itemType !== "construction") {
+      if (itemType === "seed") {
         dispatch(
           warehouseActions.addSeed({
             name: itemName,

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PlantItem } from "./warehouseSlice";
+import type { PlantItem } from "./librarySlice";
 import { supabase } from "../../../utils/supabase";
 import { apiUrl } from "../../../utils/generalUtils";
 

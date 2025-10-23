@@ -111,6 +111,7 @@ export default function Base() {
   const baseColor = "aliceblue";
   const baseName = useSelector((state: RootState) => state.base.baseName);
   const sections = useSelector((state: RootState) => state.base.sections);
+  const loading = useSelector((state: RootState) => state.base.loading);
   const userEmail = useSelector((state: RootState) => state.main.userEmail);
 
   const [showForm, setShowForm] = useState(false);
@@ -146,6 +147,7 @@ export default function Base() {
 
   useEffect(() => {
     async function checkBaseExistance() {
+      dispatch(baseActions.setLoading(true));
       let response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/base/getBaseData`,
         {
@@ -171,6 +173,7 @@ export default function Base() {
         console.log("error!");
         console.log(baseResponse);
       }
+      dispatch(baseActions.setLoading(false));
     }
 
     checkBaseExistance();
@@ -233,7 +236,7 @@ export default function Base() {
 
   let circle_2: ReactNode[] | null = null;
   let torus_2: ReactNode[] | null = null;
-  if (sections !== null && sections.length > 8) {
+  if (Array.isArray(sections) && sections !== null && sections.length > 8) {
     let baseCircle2 = sections.slice(8, 16);
     baseCircle2.sort((a, b) => a - b);
 
@@ -289,7 +292,7 @@ export default function Base() {
   return (
     <div className="centerWindow glass self-center">
       <div className="blackWindow text-center text-white">
-        {
+        {!loading && sections && (
           <Canvas
             ref={canvasRef}
             className="nightSky"
@@ -322,7 +325,7 @@ export default function Base() {
               {circle_2}
             </RotatingGroup>
           </Canvas>
-        }
+        )}
       </div>
       {showForm && (
         <OpenedFormWrapper onClose={() => setShowForm(false)} pawMini={true}>
