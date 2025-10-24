@@ -99,11 +99,13 @@ body {
   margin-right: 0.5rem;
   border-bottom: 1px solid gray;
   font-family: system-ui;
+  text-decoration-color: var(--main-color-light);
 }
 
 .pInSectionName {
   color: var(--main-color-light);
   font-weight: bold;
+  text-shadow: 1px 1px 1px black;
 }
 
 .formReactionSuccess {
@@ -223,6 +225,22 @@ body {
   font-size: 1.1rem;
   color: var(--main-color);
   font-weight: bold;
+  text-shadow: 1px 1px 1px black;
+}
+
+.infoTitleForTable {
+  color: var(--main-color);
+  text-shadow: 1px 1px 1px black;
+
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  text-align: center;
+
+  border-bottom: 1px solid var(--main-color-light);
+  font-family: system-ui;
+  font-size: 1.1rem;
+  font-weight: bold;
+  @apply cursor-pointer flex flex-col justify-end select-none;
 }
 
 .centerPaper {
@@ -290,12 +308,45 @@ body {
 .blackWindow {
   display: flex;
   background-color: black;
+  color: var(--main-color-light);
   flex: 1;
   border-radius: 3rem;
   box-shadow: 0 0 1rem var(--main-color-light) inset;
   border: 0.2rem solid var(--main-color-light);
   min-width: 0;
   min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.centralBlackInGlass {
+  background: black;
+  color: var(--main-color-light);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0.5rem;
+  height: 100%;
+  padding: 0.5rem;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.my-scrollbar {
+  /* Firefox */
+  scrollbar-color: var(--main-color-light) transparent;
+  scrollbar-width: thin;
+
+  /* Chrome, Edge, Safari */
+}
+.my-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.my-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.my-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--main-color-light);
+  border-radius: 4px;
 }
 
 .mainButton:active {

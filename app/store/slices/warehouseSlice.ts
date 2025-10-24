@@ -43,6 +43,23 @@ const warehouseSlice = createSlice({
       const { name, count } = action.payload;
       state.seeds[name] = (state.seeds[name] || 0) - count;
     },
+    sortSeeds: (state, action: PayloadAction<{ sortBy: "name" | "price" }>) => {
+      const { sortBy } = action.payload;
+      const seedsEntries = Object.entries(state.seeds);
+
+      if (sortBy === "name") {
+        seedsEntries.sort(([a], [b]) => a.localeCompare(b));
+      } else if (sortBy === "price") {
+        seedsEntries.sort(([, a], [, b]) => a - b);
+      }
+
+      const sortedSeeds: Record<string, number> = {};
+      seedsEntries.forEach(([key, value]) => {
+        sortedSeeds[key] = value;
+      });
+
+      state.seeds = sortedSeeds;
+    },
   },
 
   extraReducers: (builder) => {
@@ -50,8 +67,14 @@ const warehouseSlice = createSlice({
   },
 });
 
-export const { setWarehouse, setMoney, changeMoney, addSeed, subtractSeed } =
-  warehouseSlice.actions;
+export const {
+  setWarehouse,
+  setMoney,
+  changeMoney,
+  addSeed,
+  subtractSeed,
+  sortSeeds,
+} = warehouseSlice.actions;
 
 export default warehouseSlice.reducer;
 

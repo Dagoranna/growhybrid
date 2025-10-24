@@ -21,15 +21,6 @@ interface MarketPositionProps {
 
 const MarketPosition: React.FC<MarketPositionProps> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
-  /*
-  type MyProps = {
-  itemName: string;
-  itemType: ItemType;
-  itemCount?: number;
-  addFormStyle?: Record<string, string>;
-  onClose?: () => void;
-};
-  */
   return (
     <>
       <div onClick={() => setIsOpen(true)}>{item.item_name}</div>

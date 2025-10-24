@@ -18,6 +18,7 @@ export interface PlantItem {
   descr?: string;
   color?: string;
   size?: number;
+  count?: number;
 }
 
 export interface MyLibraryState {

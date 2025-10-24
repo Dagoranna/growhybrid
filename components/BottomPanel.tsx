@@ -1,22 +1,10 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../app/store/slices/mainSlice";
-import * as actionsWarehouse from "../app/store/slices/warehouseSlice";
-import * as actionsLibrary from "../app/store/slices/librarySlice";
-import { FC, ReactNode } from "react";
-import { Object3D } from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
-import OpenedFormWrapper from "./forms/OpenedFormWrapper";
 import PurchaseForm from "./forms/PurchaseForm";
 import Paw from "./designelems/Paw";
-import {
-  getPrice,
-  getMoney,
-  getWarehouse,
-  getSeedInfo,
-} from "../utils/generalUtils";
+import Warehouse from "./BottomPanelWindows/Warehouse";
 
 import type { RootState, AppDispatch } from "../app/store/store";
 
@@ -91,56 +79,6 @@ function StationControl() {
         />
       )}
     </>
-  );
-}
-
-function Warehouse() {
-  const dispatch = useDispatch<AppDispatch>();
-  const userId = useSelector((state: RootState) => state.main.userID);
-  const money = useSelector((state: RootState) => state.warehouse.money);
-  const seeds = useSelector((state: RootState) => state.warehouse.seeds);
-  const crops = useSelector((state: RootState) => state.warehouse.crops);
-  const library = useSelector((state: RootState) => state.library.items);
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const fetchWarehouse = async () => {
-      const value = await getWarehouse(userId);
-      dispatch(actionsWarehouse.setWarehouse(value));
-    };
-
-    fetchWarehouse();
-  }, [dispatch, userId]);
-
-  useEffect(() => {
-    const fetchSeed = async () => {
-      for (const seed of Object.keys(seeds)) {
-        if (!library[seed]) {
-          const newSeed = await getSeedInfo(seed);
-          dispatch(actionsLibrary.setItem({ name: seed, item: newSeed }));
-        }
-      }
-    };
-    fetchSeed();
-  }, [seeds, dispatch]);
-
-  const seedsInfo = JSON.stringify(seeds).slice(1, -1);
-  const lib = useSelector((state: RootState) => state.library.items);
-  return (
-    <div className="infoSection">
-      <p className="pInSection infoTitle">Warehouse</p>
-      <p className="pInSection">
-        <span className="pInSectionName">Credits:</span> {money}
-      </p>
-      <p className="pInSection">
-        <span className="pInSectionName">Seeds:</span> {seedsInfo}
-      </p>
-      <p className="pInSection">
-        <span className="pInSectionName">Crops:</span> {Object.keys(crops)}
-      </p>
-      <p className="pInSection">{JSON.stringify(lib)}</p>
-    </div>
   );
 }
 
