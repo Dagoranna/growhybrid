@@ -27,6 +27,12 @@ const MarketPosition: React.FC<MarketPositionProps> = ({ item }) => {
       <div>{item.category}</div>
       <div>{item.growing_time}</div>
       <div>{item.seed_price}</div>
+      <button
+        className="buttonMini max-w-10 ml-auto mr-auto"
+        onClick={() => setIsOpen(true)}
+      >
+        Buy
+      </button>
       {isOpen && (
         <PurchaseForm
           itemName={item.item_name}
@@ -59,12 +65,14 @@ function MarketMainBlock() {
   }, [dispatch]);
 
   return (
-    <div className="grid grid-cols-4 gap-x-4 gap-y-2 p-4 text-sm">
-      <div className="pInSectionName border-b pb-1">Name</div>
-      <div className="pInSectionName border-b pb-1">Category</div>
-      <div className="pInSectionName border-b pb-1">Growing time</div>
-      <div className="pInSectionName border-b pb-1">Seed price</div>
-
+    <div className="grid grid-cols-5 gap-x-4 gap-y-2 p-4 text-sm w-full">
+      <div className="pInSectionName border-b pb-1 text-center">Name</div>
+      <div className="pInSectionName border-b pb-1 text-center">Category</div>
+      <div className="pInSectionName border-b pb-1 text-center">
+        Growing time
+      </div>
+      <div className="pInSectionName border-b pb-1 text-center">Seed price</div>
+      <div className="pInSectionName border-b pb-1 w-full text-center"></div>
       {seeds.map((item: PlantItem) => (
         <MarketPosition key={item.id} item={item} />
       ))}

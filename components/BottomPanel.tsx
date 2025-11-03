@@ -5,28 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import PurchaseForm from "./forms/PurchaseForm";
 import Paw from "./designelems/Paw";
 import Warehouse from "./BottomPanelWindows/Warehouse";
+import SelectedSectionInfo from "./BottomPanelWindows/SelectedSectionInfo";
 
 import type { RootState, AppDispatch } from "../app/store/store";
-
-function SelectedSectionInfo() {
-  const activeSection = useSelector(
-    (state: RootState) => state.base.activeSection
-  );
-
-  return (
-    <div className="infoSection">
-      <p className="pInSection infoTitle">Section info</p>
-      <p className="pInSection">
-        <span className="pInSectionName">Selected section: </span>
-        {activeSection === null
-          ? "none"
-          : activeSection === 0
-            ? "Core"
-            : `farm section ${activeSection}`}
-      </p>
-    </div>
-  );
-}
 
 function StationInfo() {
   const baseName = useSelector((state: RootState) => state.base.baseName);

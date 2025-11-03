@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../app/store/store";
 
@@ -9,8 +8,7 @@ import * as actionsWarehouse from "../../app/store/slices/warehouseSlice";
 import * as actionsLibrary from "../../app/store/slices/librarySlice";
 
 import { getWarehouse, getSeedInfo } from "../../utils/generalUtils";
-import OpenedFormWrapper from "../forms/OpenedFormWrapper";
-import type { PlantItem } from "../../app/store/slices/librarySlice";
+import SeedsWindow from "./SeedsWindow";
 
 export default function Warehouse() {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,157 +41,6 @@ export default function Warehouse() {
     fetchSeed();
   }, [seeds, dispatch]);
 
-  function SeedsWindow() {
-    return (
-      <OpenedFormWrapper
-        addFormStyle={{
-          width: "50%",
-          maxWidth: "50%",
-          height: "50%",
-        }}
-        onClose={() => setSeedsOpen(!seedsOpen)}
-        pawMini={true}
-      >
-        <WarehouseMainBlock />
-      </OpenedFormWrapper>
-    );
-  }
-
-  interface WarehousePositionProps {
-    item: PlantItem;
-  }
-
-  const WarehousePosition: React.FC<WarehousePositionProps> = ({ item }) => {
-    return (
-      <>
-        <div className="text-start pl-3">{item.item_name}</div>
-        <div>{item.category}</div>
-        <div>{item.growing_time}</div>
-        <div>{item.seed_price}</div>
-        <div className="text-start pl-3">{item.descr}</div>
-        <div>{item.count}</div>
-      </>
-    );
-  };
-
-  function WarehouseMainBlock() {
-    const dispatch = useDispatch<AppDispatch>();
-    const seeds = useSelector((state: RootState) => state.warehouse.seeds);
-    const seedsInfo = useSelector((state: RootState) => state.library.items);
-
-    const [nameSortAsc, setNameSortAsc] = useState(true);
-    const [catSortAsc, setCatSortAsc] = useState(true);
-    const [timeSortAsc, setTimeSortAsc] = useState(true);
-    const [priceSortAsc, setPriceSortAsc] = useState(true);
-    const [countSortAsc, setCountSortAsc] = useState(true);
-    const [descrSortAsc, setDescrSortAsc] = useState(true);
-
-    const [seedsForTableSorted, setSeedsForTableSorted] = useState<PlantItem[]>(
-      []
-    );
-
-    const seedsForTable = Object.entries(seeds).map((seed) => {
-      const seedInfoFromLib = seedsInfo[seed[0]];
-      const newSeed = { count: seed[1], ...seedInfoFromLib };
-      return newSeed;
-    });
-    seedsForTable.sort((a, b) => a.item_name.localeCompare(b.item_name));
-
-    useEffect(() => {
-      const arr = Object.entries(seeds).map(([key, count]) => {
-        const seedInfoFromLib = seedsInfo[key];
-        return { count, ...seedInfoFromLib };
-      });
-      setSeedsForTableSorted(arr);
-    }, [seeds, seedsInfo]);
-
-    function sortTable(
-      column_title: keyof PlantItem,
-      data_type: "string" | "number",
-      indicator: boolean,
-      setIndicator: Dispatch<SetStateAction<boolean>>
-    ) {
-      setIndicator(!indicator);
-      setSeedsForTableSorted((prev) => {
-        const newArr = [...prev];
-        newArr.sort((a, b) => {
-          const valA = a[column_title];
-          const valB = b[column_title];
-
-          if (data_type === "string") {
-            return indicator
-              ? (valA as string).localeCompare(valB as string)
-              : (valB as string).localeCompare(valA as string);
-          } else {
-            return indicator
-              ? (valA as number) - (valB as number)
-              : (valB as number) - (valA as number);
-          }
-        });
-        return newArr;
-      });
-    }
-
-    return (
-      <div className="centralBlackInGlass grid grid-cols-6 auto-rows-min gap-x-4 gap-y-2 p-4 text-center">
-        <div className="col-span-6 grid grid-cols-6">
-          <div
-            onClick={() =>
-              sortTable("item_name", "string", nameSortAsc, setNameSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Name
-          </div>
-          <div
-            onClick={() =>
-              sortTable("category", "string", catSortAsc, setCatSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Category
-          </div>
-          <div
-            onClick={() =>
-              sortTable("growing_time", "number", timeSortAsc, setTimeSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Growing time
-          </div>
-          <div
-            onClick={() =>
-              sortTable("seed_price", "number", priceSortAsc, setPriceSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Seed packet price
-          </div>
-          <div
-            onClick={() =>
-              sortTable("descr", "string", descrSortAsc, setDescrSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Description
-          </div>
-          <div
-            onClick={() =>
-              sortTable("count", "number", countSortAsc, setCountSortAsc)
-            }
-            className="infoTitleForTable"
-          >
-            Seed packets count
-          </div>
-        </div>
-
-        {seedsForTableSorted.map((item: PlantItem) => (
-          <WarehousePosition key={item.id} item={item} />
-        ))}
-      </div>
-    );
-  }
-
   return (
     <div className="infoSection">
       <p className="pInSection infoTitle">Warehouse</p>
@@ -207,7 +54,9 @@ export default function Warehouse() {
         >
           Seeds
         </span>
-        {seedsOpen && <SeedsWindow />}
+        {seedsOpen && (
+          <SeedsWindow funcClose={setSeedsOpen} varClose={seedsOpen} />
+        )}
       </p>
       <p className="pInSection">
         <span className="pInSectionName">Crops:</span> {Object.keys(crops)}

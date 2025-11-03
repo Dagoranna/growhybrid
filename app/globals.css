@@ -181,6 +181,8 @@ body {
   min-width: 3rem;
   min-height: 1rem;
   align-self: center;
+  margin-left: auto;
+  margin-right: auto;
 
   background: linear-gradient(var(--main-color-dark) 50%, var(--main-color));
   border: 0.1rem solid var(--main-color-dark);
@@ -235,11 +237,13 @@ body {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   text-align: center;
+  padding-bottom: 1px;
 
   border-bottom: 1px solid var(--main-color-light);
   font-family: system-ui;
   font-size: 1.1rem;
   font-weight: bold;
+
   @apply cursor-pointer flex flex-col justify-end select-none;
 }
 
@@ -294,7 +298,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%); /*move to center*/
 
-  max-width: 50vw;
+  /*max-width: 50vw;*/
   max-height: 50vh;
   width: fit-content;
 
